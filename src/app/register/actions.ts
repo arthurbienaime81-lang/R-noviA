@@ -32,11 +32,14 @@ export async function register(
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {
+    if (error) {
+      console.error("[register] supabase.auth.signUp error:", error.status, error.message);
+    }
     return {
       error:
         error?.message === "User already registered"
           ? "Un compte existe déjà avec cet email."
-          : "Impossible de créer le compte. Réessayez.",
+          : `Impossible de créer le compte : ${error?.message ?? "erreur inconnue"}.`,
       info: null,
     };
   }
