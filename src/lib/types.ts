@@ -1,4 +1,4 @@
-export type StatutChantier = "en_cours" | "termine" | "en_retard";
+export type StatutChantier = "en_cours" | "termine" | "en_retard" | "conteste";
 export type StatutEtape = "pending" | "en_cours" | "fait";
 export type StatutReclamation =
   | "ouverte"
@@ -33,6 +33,10 @@ export interface Chantier {
   date_debut: string | null;
   date_fin_prevue: string | null;
   description: string | null;
+  description_cloture: string | null;
+  photo_cloture_url: string | null;
+  date_cloture: string | null;
+  date_limite_contestation: string | null;
   lien_token: string;
   created_at: string;
 }

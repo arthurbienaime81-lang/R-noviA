@@ -15,7 +15,7 @@ import type {
 import { StatutBadge } from "@/components/StatutBadge";
 import { CopyLinkButton } from "@/components/CopyLinkButton";
 import { EditChantierModal } from "./EditChantierModal";
-import { ProgressionEditor } from "./ProgressionEditor";
+import { ClotureChantierForm } from "./ClotureChantierForm";
 import { EtapesList } from "./EtapesList";
 import { PhotoUpload } from "./PhotoUpload";
 import { ReclamationsList, type ReclamationAvecDetails } from "./ReclamationsList";
@@ -122,10 +122,7 @@ export default async function ChantierDetailPage({
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <section className="rounded-lg border border-slate-200 bg-white p-6 lg:col-span-2">
-          <ProgressionEditor
-            chantierId={chantier.id}
-            progression={chantier.progression}
-          />
+          <ClotureChantierForm chantier={chantier} />
           <dl className="mt-4 grid grid-cols-2 gap-4 border-t border-slate-100 pt-4 text-sm sm:grid-cols-4">
             <div>
               <dt className="text-xs text-slate-500">Client</dt>

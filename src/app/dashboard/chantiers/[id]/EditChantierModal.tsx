@@ -57,13 +57,19 @@ export function EditChantierModal({ chantier }: { chantier: Chantier }) {
                 </label>
                 <select
                   name="statut"
-                  defaultValue={chantier.statut}
-                  className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  defaultValue={
+                    chantier.statut === "en_retard" ? "en_retard" : "en_cours"
+                  }
+                  disabled={chantier.statut === "termine" || chantier.statut === "conteste"}
+                  className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-slate-50 disabled:text-slate-400"
                 >
                   <option value="en_cours">En cours</option>
-                  <option value="termine">Terminé</option>
                   <option value="en_retard">En retard</option>
                 </select>
+                <p className="mt-1 text-xs text-slate-500">
+                  « Terminé » et « Contesté » sont gérés automatiquement via la
+                  clôture du chantier et la contestation client.
+                </p>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

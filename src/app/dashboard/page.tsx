@@ -27,7 +27,8 @@ async function flagChantiersEnRetard(
       c.date_fin_prevue &&
       c.date_fin_prevue < aujourdHui &&
       c.statut !== "termine" &&
-      c.statut !== "en_retard",
+      c.statut !== "en_retard" &&
+      c.statut !== "conteste",
   );
 
   if (enRetard.length === 0) return chantiers;

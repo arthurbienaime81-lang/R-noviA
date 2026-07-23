@@ -47,6 +47,38 @@ export async function sendBienvenueChantier(
   });
 }
 
+export async function sendClotureChantier(
+  emailClient: string,
+  nomEntreprise: string,
+  nomClient: string,
+  descriptionCloture: string,
+  photoUrl: string,
+) {
+  return sendAuClient(nomEntreprise, {
+    to: emailClient,
+    subject: `Votre chantier avec ${nomEntreprise} est terminé`,
+    html: `
+      <p>Bonjour ${nomClient},</p>
+      <p>Votre chantier avec <strong>${nomEntreprise}</strong> est maintenant terminé :</p>
+      <p>${descriptionCloture}</p>
+      <p><img src="${photoUrl}" alt="Photo finale du chantier" style="max-width:400px" /></p>
+      <p>Si tout est conforme, aucune action n'est nécessaire. Vous disposez de 72h pour contester cette clôture depuis votre page de suivi.</p>
+      <p>${nomEntreprise}</p>
+    `,
+  });
+}
+
+export async function sendContestationChantierAlert(
+  emailEntreprise: string,
+  nomClient: string,
+) {
+  return sendEnInterne({
+    to: emailEntreprise,
+    subject: `Contestation de clôture — chantier de ${nomClient}`,
+    html: `<p><strong>${nomClient}</strong> a contesté la clôture de son chantier. Le chantier repasse en cours.</p>`,
+  });
+}
+
 // ━━━ Étapes de chantier ━━━
 
 export async function sendEtapeUpdate(

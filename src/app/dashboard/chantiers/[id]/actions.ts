@@ -8,6 +8,7 @@ import {
   sendNouveauMessageClient,
   sendPriseEnCharge,
   sendCloture,
+  sendClotureChantier,
 } from "@/lib/emails";
 import type {
   StatutChantier,
@@ -32,7 +33,12 @@ export async function updateChantier(
   _prevState: ChantierActionState,
   formData: FormData,
 ): Promise<ChantierActionState> {
-  const statut = String(formData.get("statut") ?? "") as StatutChantier;
+  const statutSaisi = String(formData.get("statut") ?? "");
+  // "termine" et "conteste" ne sont accessibles que via les flux dédiés
+  // (clôture avec preuve photo, contestation client) : on ignore toute
+  // tentative de les définir depuis ce formulaire générique.
+  const statut: StatutChantier =
+    statutSaisi === "en_retard" ? "en_retard" : "en_cours";
   const date_debut = String(formData.get("date_debut") ?? "") || null;
   const date_fin_prevue = String(formData.get("date_fin_prevue") ?? "") || null;
 
@@ -51,17 +57,51 @@ export async function updateChantier(
   return { error: null, success: true };
 }
 
-export async function updateProgression(chantierId: string, progression: number) {
-  const supabase = createClient();
-  const clamped = Math.min(100, Math.max(0, Math.round(progression)));
-  const update: { progression: number; statut?: StatutChantier } = {
-    progression: clamped,
-  };
-  if (clamped >= 100) update.statut = "termine";
+// Recalcule la progression (0/25/50/75/100 %) à partir du nombre d'étapes
+// marquées "fait". Si une clôture avait déjà eu lieu et qu'une étape repasse
+// "à faire" (progression < 100), la clôture est annulée : le chantier
+// redevient "en_cours" et les informations de clôture sont effacées.
+async function recalculerProgression(
+  supabase: SupabaseClient,
+  chantierId: string,
+) {
+  const { data: etapes } = await supabase
+    .from("etapes")
+    .select("statut")
+    .eq("chantier_id", chantierId);
+
+  const total = etapes?.length ?? 0;
+  const faites = (etapes ?? []).filter((e) => e.statut === "fait").length;
+  const progression = total > 0 ? Math.round((faites / total) * 100) : 0;
+
+  const { data: chantier } = await supabase
+    .from("chantiers")
+    .select("statut")
+    .eq("id", chantierId)
+    .single();
+
+  const update: {
+    progression: number;
+    statut?: StatutChantier;
+    date_cloture?: null;
+    date_limite_contestation?: null;
+    description_cloture?: null;
+    photo_cloture_url?: null;
+  } = { progression };
+
+  if (
+    progression < 100 &&
+    chantier &&
+    (chantier.statut === "termine" || chantier.statut === "conteste")
+  ) {
+    update.statut = "en_cours";
+    update.date_cloture = null;
+    update.date_limite_contestation = null;
+    update.description_cloture = null;
+    update.photo_cloture_url = null;
+  }
 
   await supabase.from("chantiers").update(update).eq("id", chantierId);
-  revalidatePath(`/dashboard/chantiers/${chantierId}`);
-  revalidatePath("/dashboard");
 }
 
 export async function toggleEtape(
@@ -77,31 +117,134 @@ export async function toggleEtape(
     .update({ statut: nouveauStatut })
     .eq("id", etapeId);
 
-  if (!error && nouveauStatut === "fait") {
-    const [{ data: chantier }, { data: etape }] = await Promise.all([
-      supabase
-        .from("chantiers")
-        .select("email_client, adresse, entreprise_id, entreprises(nom)")
-        .eq("id", chantierId)
-        .single(),
-      supabase.from("etapes").select("nom").eq("id", etapeId).single(),
-    ]);
+  if (!error) {
+    await recalculerProgression(supabase, chantierId);
 
-    const entrepriseNom = (
-      chantier as unknown as { entreprises: { nom: string } | null } | null
-    )?.entreprises?.nom;
+    if (nouveauStatut === "fait") {
+      const [{ data: chantier }, { data: etape }] = await Promise.all([
+        supabase
+          .from("chantiers")
+          .select("email_client, adresse, entreprise_id, entreprises(nom)")
+          .eq("id", chantierId)
+          .single(),
+        supabase.from("etapes").select("nom").eq("id", etapeId).single(),
+      ]);
 
-    if (chantier && etape && entrepriseNom) {
-      await sendEtapeUpdate(
-        chantier.email_client,
-        entrepriseNom,
-        chantier.adresse,
-        etape.nom,
-      ).catch(() => {});
+      const entrepriseNom = (
+        chantier as unknown as { entreprises: { nom: string } | null } | null
+      )?.entreprises?.nom;
+
+      if (chantier && etape && entrepriseNom) {
+        await sendEtapeUpdate(
+          chantier.email_client,
+          entrepriseNom,
+          chantier.adresse,
+          etape.nom,
+        ).catch(() => {});
+      }
     }
   }
 
   revalidatePath(`/dashboard/chantiers/${chantierId}`);
+  revalidatePath("/dashboard");
+}
+
+// ━━━ Clôture du chantier (progression 100 % requise, preuve photo obligatoire) ━━━
+
+export async function clorChantier(
+  chantierId: string,
+  _prevState: ChantierActionState,
+  formData: FormData,
+): Promise<ChantierActionState> {
+  const description = String(formData.get("description_cloture") ?? "").trim();
+  const photo = formData.get("photo") as File | null;
+
+  if (!description) {
+    return {
+      error: "La description de fin de chantier est obligatoire.",
+      success: false,
+    };
+  }
+  if (!photo || photo.size === 0) {
+    return { error: "Une photo finale est obligatoire.", success: false };
+  }
+
+  const supabase = createClient();
+
+  const { data: chantierActuel } = await supabase
+    .from("chantiers")
+    .select("progression, statut")
+    .eq("id", chantierId)
+    .single();
+
+  if (!chantierActuel || chantierActuel.progression < 100) {
+    return {
+      error: "Toutes les étapes doivent être terminées avant de clôturer le chantier.",
+      success: false,
+    };
+  }
+  if (chantierActuel.statut !== "en_cours") {
+    return { error: "Ce chantier est déjà clôturé.", success: false };
+  }
+
+  const ext = photo.name.split(".").pop() ?? "jpg";
+  const path = `${chantierId}/${crypto.randomUUID()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("chantier-photos")
+    .upload(path, photo, { contentType: photo.type });
+
+  if (uploadError) {
+    return { error: "Impossible d'envoyer la photo.", success: false };
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("chantier-photos").getPublicUrl(path);
+
+  await supabase.from("photos").insert({
+    chantier_id: chantierId,
+    url: publicUrl,
+    caption: "Photo de clôture",
+  });
+
+  const now = new Date();
+  const dateLimiteContestation = new Date(now.getTime() + 72 * 60 * 60 * 1000);
+
+  const { data: chantier, error: updateError } = await supabase
+    .from("chantiers")
+    .update({
+      statut: "termine",
+      description_cloture: description,
+      photo_cloture_url: publicUrl,
+      date_cloture: now.toISOString(),
+      date_limite_contestation: dateLimiteContestation.toISOString(),
+    })
+    .eq("id", chantierId)
+    .select("email_client, nom_client, entreprises(nom)")
+    .single();
+
+  if (updateError || !chantier) {
+    return { error: "Impossible de clôturer le chantier.", success: false };
+  }
+
+  const entrepriseNom = (
+    chantier as unknown as { entreprises: { nom: string } | null } | null
+  )?.entreprises?.nom;
+
+  if (entrepriseNom) {
+    await sendClotureChantier(
+      chantier.email_client,
+      entrepriseNom,
+      chantier.nom_client,
+      description,
+      publicUrl,
+    ).catch(() => {});
+  }
+
+  revalidatePath(`/dashboard/chantiers/${chantierId}`);
+  revalidatePath("/dashboard");
+  return { error: null, success: true };
 }
 
 export async function uploadPhoto(

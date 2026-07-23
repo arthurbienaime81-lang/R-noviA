@@ -7,6 +7,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { ReclamationForm } from "./ReclamationForm";
 import { MessagerieClient } from "./MessagerieClient";
 import { MesReclamations, type ReclamationClient } from "./MesReclamations";
+import { ClotureChantierInfo } from "./ClotureChantierInfo";
 
 export const metadata: Metadata = {
   title: "Suivi de votre chantier",
@@ -125,6 +126,15 @@ export default async function ChantierPubliquePage({
             Fin prévue le {formatDate(chantier.date_fin_prevue)}
           </p>
         </section>
+
+        <ClotureChantierInfo
+          token={params.token}
+          statut={chantier.statut}
+          descriptionCloture={chantier.description_cloture}
+          photoClotureUrl={chantier.photo_cloture_url}
+          dateCloture={chantier.date_cloture}
+          dateLimiteContestation={chantier.date_limite_contestation}
+        />
 
         <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5">
           <h2 className="mb-4 text-sm font-semibold text-slate-900">Étapes</h2>

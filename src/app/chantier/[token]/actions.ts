@@ -7,6 +7,7 @@ import {
   sendReclamationNotification,
   sendNouveauMessageEntreprise,
   sendContestationAlert,
+  sendContestationChantierAlert,
 } from "@/lib/emails";
 import { getPrioriteForSujet, estHeureOuvree } from "@/lib/priorites";
 
@@ -20,7 +21,7 @@ async function resolveChantier(token: string) {
   const { data: chantier } = await admin
     .from("chantiers")
     .select(
-      "id, nom_client, email_client, tel_client, adresse, entreprise_id",
+      "id, nom_client, email_client, tel_client, adresse, entreprise_id, statut, date_limite_contestation",
     )
     .eq("lien_token", token)
     .single();
@@ -193,6 +194,55 @@ export async function contesterReclamation(
       reclamation.numero_ticket,
       chantier.nom_client,
     ).catch(() => {});
+  }
+
+  revalidatePath(`/chantier/${token}`);
+  return { error: null, success: true };
+}
+
+export async function contesterChantier(
+  token: string,
+): Promise<PublicActionState> {
+  const chantier = await resolveChantier(token);
+  if (!chantier) {
+    return { error: "Chantier introuvable.", success: false };
+  }
+
+  const dateLimite = chantier.date_limite_contestation
+    ? new Date(chantier.date_limite_contestation)
+    : null;
+
+  if (
+    chantier.statut !== "termine" ||
+    !dateLimite ||
+    dateLimite.getTime() < Date.now()
+  ) {
+    return {
+      error: "Ce chantier ne peut plus être contesté.",
+      success: false,
+    };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("chantiers")
+    .update({ statut: "conteste" })
+    .eq("id", chantier.id);
+
+  if (error) {
+    return { error: "Impossible d'enregistrer la contestation.", success: false };
+  }
+
+  const { data: entreprise } = await admin
+    .from("entreprises")
+    .select("email")
+    .eq("id", chantier.entreprise_id)
+    .single();
+
+  if (entreprise) {
+    await sendContestationChantierAlert(entreprise.email, chantier.nom_client).catch(
+      () => {},
+    );
   }
 
   revalidatePath(`/chantier/${token}`);
