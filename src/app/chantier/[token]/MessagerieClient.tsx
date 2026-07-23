@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { sendMessageClient, type PublicActionState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { formatDateHeure } from "@/lib/format";
 import type { Message } from "@/lib/types";
 
 const initialState: PublicActionState = { error: null, success: false };
@@ -47,7 +48,7 @@ export function MessagerieClient({
                 }`}
               >
                 {message.auteur === "client" ? "Vous" : "Entreprise"} ·{" "}
-                {new Date(message.created_at).toLocaleString("fr-FR")}
+                {formatDateHeure(message.created_at)}
               </p>
             </div>
           ))

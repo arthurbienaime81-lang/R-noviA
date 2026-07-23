@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { sendMessageEntreprise, type ChantierActionState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { formatDateHeure } from "@/lib/format";
 import type { Message } from "@/lib/types";
 
 const initialState: ChantierActionState = { error: null, success: false };
@@ -45,7 +46,7 @@ export function Messagerie({
                 }`}
               >
                 {message.auteur === "entreprise" ? "Vous" : "Client"} ·{" "}
-                {new Date(message.created_at).toLocaleString("fr-FR")}
+                {formatDateHeure(message.created_at)}
               </p>
             </div>
           ))
