@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getOrigin } from "@/lib/utils";
 import { sendBienvenueChantier } from "@/lib/emails";
+import { genererQrCodePng } from "@/lib/qrcode";
 import { ETAPES_PAR_DEFAUT } from "@/lib/types";
 
 export async function signOut() {
@@ -89,9 +91,41 @@ export async function createChantier(
   }
 
   const lienSuivi = `${getOrigin()}/chantier/${chantier.lien_token}`;
-  await sendBienvenueChantier(email_client, entreprise.nom, nom_client, lienSuivi).catch(
-    () => {},
-  );
+
+  // Le QR code est un bonus dans l'email de bienvenue : sa génération ou
+  // son upload ne doivent jamais empêcher l'envoi de l'email lui-même.
+  let qrCodeUrl: string | undefined;
+  try {
+    const qrPng = await genererQrCodePng(lienSuivi);
+    // Upload via le client service_role : cette table de stockage n'a pas
+    // de policy RLS dédiée à l'utilisateur authentifié, service_role la
+    // contourne intégralement (comme pour les autres écritures publiques
+    // du projet).
+    const admin = createAdminClient();
+    const { error: qrUploadError } = await admin.storage
+      .from("qrcodes")
+      .upload(`${chantier.id}.png`, qrPng, {
+        contentType: "image/png",
+        upsert: true,
+      });
+
+    if (!qrUploadError) {
+      const {
+        data: { publicUrl },
+      } = admin.storage.from("qrcodes").getPublicUrl(`${chantier.id}.png`);
+      qrCodeUrl = publicUrl;
+    }
+  } catch {
+    // QR code indisponible : l'email partira quand même avec le lien texte seul.
+  }
+
+  await sendBienvenueChantier(
+    email_client,
+    entreprise.nom,
+    nom_client,
+    lienSuivi,
+    qrCodeUrl,
+  ).catch(() => {});
 
   revalidatePath("/dashboard");
   return { error: null, success: true };

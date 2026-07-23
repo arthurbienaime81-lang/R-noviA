@@ -33,7 +33,39 @@ export async function sendBienvenueChantier(
   nomEntreprise: string,
   nomClient: string,
   lienSuivi: string,
+  qrCodeUrl?: string,
 ) {
+  // Image hébergée sur une URL publique stable (Supabase Storage), pas en
+  // CID/data-URL : Resend documente lui-même que les images inline en CID
+  // ou en base64 sont fréquemment bloquées par les webmails (Gmail,
+  // Outlook), justement les deux clients les plus courants ici.
+  const qrHtml = qrCodeUrl
+    ? `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+        <tr>
+          <td align="center">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border:1px solid #e2e8f0; border-radius:8px;">
+              <tr>
+                <td style="padding:16px;">
+                  <img
+                    src="${qrCodeUrl}"
+                    width="200"
+                    height="200"
+                    alt="QR code à scanner pour accéder à votre page de suivi de chantier (${lienSuivi})"
+                    style="display:block; width:200px; height:200px; background-color:#ffffff;"
+                  />
+                </td>
+              </tr>
+            </table>
+            <p style="margin:8px 0 0; font-size:12px; color:#64748b;">
+              Ou scannez ce QR code pour un accès rapide depuis votre mobile
+            </p>
+          </td>
+        </tr>
+      </table>
+    `
+    : "";
+
   return sendAuClient(nomEntreprise, {
     to: emailClient,
     subject: `Bienvenue ! Votre chantier avec ${nomEntreprise} démarre`,
@@ -42,6 +74,7 @@ export async function sendBienvenueChantier(
       <p>Votre chantier avec <strong>${nomEntreprise}</strong> vient de démarrer.</p>
       <p>Vous pouvez suivre son avancement en temps réel à tout moment via votre page de suivi personnelle :</p>
       <p><a href="${lienSuivi}">${lienSuivi}</a></p>
+      ${qrHtml}
       <p>${nomEntreprise}</p>
     `,
   });
