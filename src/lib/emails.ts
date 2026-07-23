@@ -26,6 +26,27 @@ function sendEnInterne(opts: { to: string; subject: string; html: string }) {
   return getResend().emails.send({ from: DEFAULT_FROM, ...opts });
 }
 
+// ━━━ Création de chantier ━━━
+
+export async function sendBienvenueChantier(
+  emailClient: string,
+  nomEntreprise: string,
+  nomClient: string,
+  lienSuivi: string,
+) {
+  return sendAuClient(nomEntreprise, {
+    to: emailClient,
+    subject: `Bienvenue ! Votre chantier avec ${nomEntreprise} démarre`,
+    html: `
+      <p>Bonjour ${nomClient},</p>
+      <p>Votre chantier avec <strong>${nomEntreprise}</strong> vient de démarrer.</p>
+      <p>Vous pouvez suivre son avancement en temps réel à tout moment via votre page de suivi personnelle :</p>
+      <p><a href="${lienSuivi}">${lienSuivi}</a></p>
+      <p>${nomEntreprise}</p>
+    `,
+  });
+}
+
 // ━━━ Étapes de chantier ━━━
 
 export async function sendEtapeUpdate(

@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getOrigin } from "@/lib/utils";
+import { sendBienvenueChantier } from "@/lib/emails";
 import { ETAPES_PAR_DEFAUT } from "@/lib/types";
 
 export async function signOut() {
@@ -44,7 +46,7 @@ export async function createChantier(
 
   const { data: entreprise } = await supabase
     .from("entreprises")
-    .select("id")
+    .select("id, nom")
     .eq("user_id", user.id)
     .single();
 
@@ -64,7 +66,7 @@ export async function createChantier(
       date_debut,
       date_fin_prevue,
     })
-    .select("id")
+    .select("id, lien_token")
     .single();
 
   if (insertError || !chantier) {
@@ -85,6 +87,11 @@ export async function createChantier(
       success: false,
     };
   }
+
+  const lienSuivi = `${getOrigin()}/chantier/${chantier.lien_token}`;
+  await sendBienvenueChantier(email_client, entreprise.nom, nom_client, lienSuivi).catch(
+    () => {},
+  );
 
   revalidatePath("/dashboard");
   return { error: null, success: true };
