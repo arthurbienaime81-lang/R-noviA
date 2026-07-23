@@ -10,16 +10,20 @@ const initialState: AvisActionState = { error: null, success: false, note: null 
 export function AvisForm({
   token,
   nomEntreprise,
+  googleMapsUrl,
 }: {
   token: string;
   nomEntreprise: string;
+  googleMapsUrl: string | null;
 }) {
   const action = submitAvis.bind(null, token);
   const [state, formAction] = useFormState(action, initialState);
 
   if (state.success && state.note !== null) {
     if (state.note >= 4) {
-      const lienGoogle = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nomEntreprise)}`;
+      const lienGoogle =
+        googleMapsUrl ||
+        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nomEntreprise)}`;
       return (
         <div className="space-y-4 text-center">
           <p className="text-sm text-slate-700">

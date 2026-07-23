@@ -17,13 +17,13 @@ export default async function AvisPage({
 
   const { data: avis } = await admin
     .from("avis")
-    .select("id, note, entreprise_id, entreprises(nom)")
+    .select("id, note, entreprise_id, entreprises(nom, google_maps_url)")
     .eq("token", params.token)
     .single<{
       id: string;
       note: number | null;
       entreprise_id: string;
-      entreprises: { nom: string } | null;
+      entreprises: { nom: string; google_maps_url: string | null } | null;
     }>();
 
   if (!avis) {
@@ -31,6 +31,7 @@ export default async function AvisPage({
   }
 
   const nomEntreprise = avis.entreprises?.nom ?? "l'entreprise";
+  const googleMapsUrl = avis.entreprises?.google_maps_url ?? null;
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#F8FAFC] px-4 py-10">
@@ -43,7 +44,11 @@ export default async function AvisPage({
             Vous avez déjà répondu à cette demande d&apos;avis. Merci !
           </p>
         ) : (
-          <AvisForm token={params.token} nomEntreprise={nomEntreprise} />
+          <AvisForm
+            token={params.token}
+            nomEntreprise={nomEntreprise}
+            googleMapsUrl={googleMapsUrl}
+          />
         )}
       </div>
     </main>

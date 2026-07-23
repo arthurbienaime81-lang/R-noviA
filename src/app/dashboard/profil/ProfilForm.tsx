@@ -59,6 +59,23 @@ export function ProfilForm({ entreprise }: { entreprise: Entreprise }) {
         />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-slate-700">
+          Lien Google Maps de votre entreprise
+        </label>
+        <input
+          name="google_maps_url"
+          type="url"
+          placeholder="https://maps.app.goo.gl/..."
+          defaultValue={entreprise.google_maps_url ?? ""}
+          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        />
+        <p className="mt-1 text-xs text-slate-500">
+          Utilisé pour rediriger vos clients vers votre fiche Google Maps
+          lorsqu&apos;ils laissent un avis de 4 étoiles ou plus.
+        </p>
+      </div>
+
       <SubmitButton pendingLabel="Enregistrement...">Enregistrer</SubmitButton>
     </form>
   );

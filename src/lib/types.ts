@@ -17,6 +17,7 @@ export interface Entreprise {
   email: string;
   tel: string | null;
   logo_url: string | null;
+  google_maps_url: string | null;
   created_at: string;
 }
 

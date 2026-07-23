@@ -12,6 +12,7 @@ export async function updateProfil(
   const nom = String(formData.get("nom") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const tel = String(formData.get("tel") ?? "").trim();
+  const google_maps_url = String(formData.get("google_maps_url") ?? "").trim();
 
   if (!nom || !email) {
     return { error: "Le nom et l'email sont obligatoires.", success: false };
@@ -28,7 +29,7 @@ export async function updateProfil(
 
   const { error } = await supabase
     .from("entreprises")
-    .update({ nom, email, tel: tel || null })
+    .update({ nom, email, tel: tel || null, google_maps_url: google_maps_url || null })
     .eq("user_id", user.id);
 
   if (error) {
