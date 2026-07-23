@@ -15,6 +15,7 @@ import type {
   StatutEtape,
   Priorite,
 } from "@/lib/types";
+import { validatePhotoFile, extensionFromMimeType } from "@/lib/uploads";
 
 export type ChantierActionState = { error: string | null; success: boolean };
 
@@ -168,6 +169,10 @@ export async function clorChantier(
   if (!photo || photo.size === 0) {
     return { error: "Une photo finale est obligatoire.", success: false };
   }
+  const photoError = validatePhotoFile(photo);
+  if (photoError) {
+    return { error: photoError, success: false };
+  }
 
   const supabase = createClient();
 
@@ -187,7 +192,7 @@ export async function clorChantier(
     return { error: "Ce chantier est déjà clôturé.", success: false };
   }
 
-  const ext = photo.name.split(".").pop() ?? "jpg";
+  const ext = extensionFromMimeType(photo.type);
   const path = `${chantierId}/${crypto.randomUUID()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
@@ -258,9 +263,13 @@ export async function uploadPhoto(
   if (!file || file.size === 0) {
     return { error: "Merci de sélectionner une photo.", success: false };
   }
+  const fileError = validatePhotoFile(file);
+  if (fileError) {
+    return { error: fileError, success: false };
+  }
 
   const supabase = createClient();
-  const ext = file.name.split(".").pop() ?? "jpg";
+  const ext = extensionFromMimeType(file.type);
   const path = `${chantierId}/${crypto.randomUUID()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
@@ -442,9 +451,13 @@ export async function clorReclamation(
       success: false,
     };
   }
+  const photoError = validatePhotoFile(photo);
+  if (photoError) {
+    return { error: photoError, success: false };
+  }
 
   const supabase = createClient();
-  const ext = photo.name.split(".").pop() ?? "jpg";
+  const ext = extensionFromMimeType(photo.type);
   const path = `${reclamationId}/${crypto.randomUUID()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage

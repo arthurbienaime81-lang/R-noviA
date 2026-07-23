@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { validatePhotoFile, extensionFromMimeType } from "@/lib/uploads";
 
 export type ProfilActionState = { error: string | null; success: boolean };
 
@@ -50,6 +51,10 @@ export async function uploadLogo(
   if (!file || file.size === 0) {
     return { error: "Merci de sélectionner une image.", success: false };
   }
+  const fileError = validatePhotoFile(file);
+  if (fileError) {
+    return { error: fileError, success: false };
+  }
 
   const supabase = createClient();
   const {
@@ -70,7 +75,7 @@ export async function uploadLogo(
     return { error: "Impossible de retrouver votre entreprise.", success: false };
   }
 
-  const ext = file.name.split(".").pop() ?? "png";
+  const ext = extensionFromMimeType(file.type);
   const path = `${entreprise.id}/logo.${ext}`;
 
   const { error: uploadError } = await supabase.storage

@@ -10,6 +10,11 @@ import {
   sendContestationChantierAlert,
 } from "@/lib/emails";
 import { getPrioriteForSujet, estHeureOuvree } from "@/lib/priorites";
+import {
+  MAX_PHOTOS_RECLAMATION,
+  validatePhotoFile,
+  extensionFromMimeType,
+} from "@/lib/uploads";
 
 export type PublicActionState = { error: string | null; success: boolean };
 
@@ -38,14 +43,29 @@ export async function submitReclamation(
   const message = String(formData.get("message") ?? "").trim();
   const photos = formData
     .getAll("photos")
-    .filter((f): f is File => f instanceof File && f.size > 0)
-    .slice(0, 3);
+    .filter((f): f is File => f instanceof File && f.size > 0);
 
   if (!sujet || !message) {
     return {
       error: "Merci de renseigner le sujet et le message.",
       success: false,
     };
+  }
+
+  // Toujours revalider côté serveur : le nombre, le type et la taille des
+  // fichiers ne doivent jamais être fiés au seul contrôle côté client, qui
+  // peut être contourné par un appel API direct.
+  if (photos.length > MAX_PHOTOS_RECLAMATION) {
+    return {
+      error: `Vous pouvez joindre au maximum ${MAX_PHOTOS_RECLAMATION} photos.`,
+      success: false,
+    };
+  }
+  for (const photo of photos) {
+    const validationError = validatePhotoFile(photo);
+    if (validationError) {
+      return { error: validationError, success: false };
+    }
   }
 
   const chantier = await resolveChantier(token);
@@ -69,7 +89,7 @@ export async function submitReclamation(
 
   const photoUrls: string[] = [];
   for (const photo of photos) {
-    const ext = photo.name.split(".").pop() ?? "jpg";
+    const ext = extensionFromMimeType(photo.type);
     const path = `${reclamation.id}/${crypto.randomUUID()}.${ext}`;
     const { error: uploadError } = await admin.storage
       .from("reclamation-photos")

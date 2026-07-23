@@ -5,9 +5,14 @@ import { useFormState } from "react-dom";
 import { submitReclamation, type PublicActionState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { CATEGORIES_RECLAMATION, CANAUX_RECLAMATION } from "@/lib/priorites";
+import {
+  MAX_PHOTOS_RECLAMATION,
+  MAX_PHOTO_SIZE_BYTES,
+  ALLOWED_PHOTO_TYPES,
+} from "@/lib/uploads";
 
 const initialState: PublicActionState = { error: null, success: false };
-const MAX_PHOTOS = 3;
+const MAX_PHOTOS = MAX_PHOTOS_RECLAMATION;
 
 export function ReclamationForm({ token }: { token: string }) {
   const action = submitReclamation.bind(null, token);
@@ -20,10 +25,35 @@ export function ReclamationForm({ token }: { token: string }) {
   }, [state.success]);
 
   function handlePhotosChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const count = e.target.files?.length ?? 0;
-    setPhotoError(
-      count > MAX_PHOTOS ? `Vous pouvez joindre au maximum ${MAX_PHOTOS} photos.` : null,
-    );
+    const input = e.target;
+    const files = Array.from(input.files ?? []);
+    const messages: string[] = [];
+
+    let valides = files.filter((file) => {
+      if (!ALLOWED_PHOTO_TYPES.includes(file.type as (typeof ALLOWED_PHOTO_TYPES)[number])) {
+        messages.push(`« ${file.name} » n'est pas une image valide (JPG, PNG ou WEBP).`);
+        return false;
+      }
+      if (file.size > MAX_PHOTO_SIZE_BYTES) {
+        messages.push(`« ${file.name} » dépasse la taille maximale de 5 Mo.`);
+        return false;
+      }
+      return true;
+    });
+
+    if (valides.length > MAX_PHOTOS) {
+      messages.push(`Seules les ${MAX_PHOTOS} premières photos valides ont été conservées.`);
+      valides = valides.slice(0, MAX_PHOTOS);
+    }
+
+    // On ne peut pas juste avertir : on réassigne réellement la sélection de
+    // l'input aux fichiers valides retenus, pour que ce qui est envoyé au
+    // serveur corresponde exactement à ce que l'utilisateur voit.
+    const dataTransfer = new DataTransfer();
+    valides.forEach((file) => dataTransfer.items.add(file));
+    input.files = dataTransfer.files;
+
+    setPhotoError(messages.length > 0 ? messages.join(" ") : null);
   }
 
   if (state.success) {
@@ -97,12 +127,12 @@ export function ReclamationForm({ token }: { token: string }) {
 
       <div>
         <label className="block text-sm font-medium text-slate-700">
-          Photos (jusqu&apos;à {MAX_PHOTOS}, facultatif)
+          Photos (jusqu&apos;à {MAX_PHOTOS}, 5 Mo max chacune, facultatif)
         </label>
         <input
           type="file"
           name="photos"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           multiple
           onChange={handlePhotosChange}
           className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-200"
