@@ -15,6 +15,7 @@ import {
   validatePhotoFile,
   extensionFromMimeType,
 } from "@/lib/uploads";
+import { sousLaLimite } from "@/lib/rateLimit";
 
 export type PublicActionState = { error: string | null; success: boolean };
 
@@ -75,8 +76,19 @@ export async function submitReclamation(
 
   const priorite = getPrioriteForSujet(sujet);
   const horsHeuresOuvrees = !estHeureOuvree(new Date());
-
   const admin = createAdminClient();
+
+  // Anti-spam : au-delà de 5 réclamations pour ce chantier en 10 minutes,
+  // on bloque (usage légitime très improbable à ce rythme, protège contre
+  // un lien de suivi partagé/intercepté utilisé pour spammer l'entreprise).
+  if (!(await sousLaLimite(admin, "reclamations", chantier.id, 5, 10))) {
+    return {
+      error:
+        "Trop de réclamations envoyées récemment pour ce chantier. Merci de réessayer plus tard.",
+      success: false,
+    };
+  }
+
   const { data: reclamation, error } = await admin
     .from("reclamations")
     .insert({ chantier_id: chantier.id, sujet, message, canal, priorite })
@@ -286,6 +298,16 @@ export async function sendMessageClient(
   }
 
   const admin = createAdminClient();
+
+  // Anti-spam : messagerie plus tolérante que les réclamations (usage
+  // conversationnel), mais toujours plafonnée par chantier.
+  if (!(await sousLaLimite(admin, "messages", chantier.id, 20, 5))) {
+    return {
+      error: "Trop de messages envoyés récemment. Merci de réessayer plus tard.",
+      success: false,
+    };
+  }
+
   const { error } = await admin.from("messages").insert({
     chantier_id: chantier.id,
     contenu,

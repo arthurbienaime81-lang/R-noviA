@@ -69,6 +69,28 @@ export interface Reclamation {
   created_at: string;
 }
 
+/**
+ * Vue restreinte d'une réclamation exposée aux pages publiques
+ * (/chantier/[token]). Exclut délibérément les champs internes qui ne
+ * doivent jamais atteindre le navigateur du client (note_interne,
+ * derniere_mise_a_jour, niveau_relance, date_prise_en_charge) : passer un
+ * objet `Reclamation` complet à un composant client le sérialiserait dans
+ * le payload envoyé au navigateur même sans jamais l'afficher à l'écran.
+ */
+export interface ReclamationPublique {
+  id: string;
+  chantier_id: string;
+  sujet: string;
+  message: string;
+  statut: StatutReclamation;
+  numero_ticket: string;
+  canal: string;
+  priorite: Priorite;
+  description_resolution: string | null;
+  date_limite_contestation: string | null;
+  created_at: string;
+}
+
 export interface ReclamationPhoto {
   id: string;
   reclamation_id: string;

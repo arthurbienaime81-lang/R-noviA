@@ -2,7 +2,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatDate } from "@/lib/format";
-import type { Chantier, Etape, Message, Photo, ActiviteTicket } from "@/lib/types";
+import type {
+  Chantier,
+  Etape,
+  Message,
+  Photo,
+  ActiviteTicket,
+  ReclamationPublique,
+} from "@/lib/types";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ReclamationForm } from "./ReclamationForm";
 import { MessagerieClient } from "./MessagerieClient";
@@ -74,9 +81,16 @@ export default async function ChantierPubliquePage({
         .returns<Message[]>(),
       admin
         .from("reclamations")
-        .select("*")
+        // Sélection explicite : ne jamais faire de select("*") ici. Ces
+        // données sont passées à un composant client et donc sérialisées
+        // dans le payload envoyé au navigateur — note_interne et les autres
+        // champs internes ne doivent jamais apparaître dans cette liste.
+        .select(
+          "id, chantier_id, sujet, message, statut, numero_ticket, canal, priorite, description_resolution, date_limite_contestation, created_at",
+        )
         .eq("chantier_id", chantier.id)
-        .order("created_at", { ascending: false }),
+        .order("created_at", { ascending: false })
+        .returns<ReclamationPublique[]>(),
     ]);
 
   const reclamationIds = (reclamations ?? []).map((r) => r.id);

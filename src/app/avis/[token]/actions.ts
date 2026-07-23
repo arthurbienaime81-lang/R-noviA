@@ -36,13 +36,23 @@ export async function submitAvis(
     return { error: "Vous avez déjà répondu à cette demande d'avis.", success: false, note: avis.note };
   }
 
-  const { error } = await admin
+  // Update conditionné sur "note is null" : élimine la fenêtre de course
+  // entre la lecture ci-dessus et l'écriture (deux soumissions quasi
+  // simultanées sur le même lien ne peuvent pas toutes les deux réussir).
+  const { data: misAJour, error } = await admin
     .from("avis")
     .update({ note, commentaire: commentaire || null })
-    .eq("id", avis.id);
+    .eq("id", avis.id)
+    .is("note", null)
+    .select("id")
+    .single();
 
-  if (error) {
-    return { error: "Impossible d'enregistrer votre avis.", success: false, note: null };
+  if (error || !misAJour) {
+    return {
+      error: "Vous avez déjà répondu à cette demande d'avis.",
+      success: false,
+      note: null,
+    };
   }
 
   if (note <= 3) {

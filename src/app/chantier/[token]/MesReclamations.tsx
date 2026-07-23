@@ -4,9 +4,9 @@ import { useState, useTransition } from "react";
 import { contesterReclamation } from "./actions";
 import { PRIORITE_STYLES, PRIORITE_LABELS } from "@/lib/priorites";
 import { StatutReclamationBadge } from "@/components/StatutReclamationBadge";
-import type { Reclamation, ActiviteTicket } from "@/lib/types";
+import type { ReclamationPublique, ActiviteTicket } from "@/lib/types";
 
-export type ReclamationClient = Reclamation & { activites: ActiviteTicket[] };
+export type ReclamationClient = ReclamationPublique & { activites: ActiviteTicket[] };
 
 function ContesterButton({
   token,
