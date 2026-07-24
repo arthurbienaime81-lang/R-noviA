@@ -15,15 +15,39 @@ function clientFrom(nomEntreprise: string) {
   return `${nomEntreprise} <${FROM_ADDRESS}>`;
 }
 
+/**
+ * L'API Resend ne lève PAS d'exception pour un rejet applicatif (ex : quota,
+ * domaine non vérifié) — elle renvoie une promesse résolue avec
+ * `{ data: null, error: {...} }`. Un simple `.catch()` autour de l'appel ne
+ * peut donc rien attraper : il faut explicitement vérifier `result.error`.
+ * Centralisé ici pour que tous les emails de l'app (~15 fonctions) en
+ * bénéficient sans dupliquer la vérification à chaque appel.
+ */
+function logSiEchec(sujet: string, destinataire: string) {
+  return (result: Awaited<ReturnType<Resend["emails"]["send"]>>) => {
+    if (result.error) {
+      console.error(
+        `[email] Échec d'envoi à ${destinataire} ("${sujet}") :`,
+        result.error,
+      );
+    }
+    return result;
+  };
+}
+
 function sendAuClient(
   nomEntreprise: string,
   opts: { to: string; subject: string; html: string },
 ) {
-  return getResend().emails.send({ from: clientFrom(nomEntreprise), ...opts });
+  return getResend()
+    .emails.send({ from: clientFrom(nomEntreprise), ...opts })
+    .then(logSiEchec(opts.subject, opts.to));
 }
 
 function sendEnInterne(opts: { to: string; subject: string; html: string }) {
-  return getResend().emails.send({ from: DEFAULT_FROM, ...opts });
+  return getResend()
+    .emails.send({ from: DEFAULT_FROM, ...opts })
+    .then(logSiEchec(opts.subject, opts.to));
 }
 
 // ━━━ Création de chantier ━━━
