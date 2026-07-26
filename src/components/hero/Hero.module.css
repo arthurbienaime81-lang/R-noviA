@@ -1,0 +1,382 @@
+.hero {
+  --ink: #23261c;
+  --bg: #d4a94a;
+  --bg-2: #b8892f;
+  --concrete: #5c4a1e;
+  --amber: #a15d40;
+  --steel: #4a5a63;
+
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  font-family: var(--font-inter), sans-serif;
+  background:
+    linear-gradient(120deg, rgba(255, 244, 214, 0.75) 0%, transparent 16%),
+    linear-gradient(-40deg, rgba(120, 84, 20, 0.55) 4%, transparent 26%),
+    linear-gradient(105deg, transparent 38%, rgba(255, 240, 200, 0.6) 50%, transparent 62%),
+    linear-gradient(-55deg, transparent 58%, rgba(120, 84, 20, 0.4) 70%, transparent 84%),
+    radial-gradient(ellipse 900px 700px at 80% 70%, rgba(120, 84, 20, 0.4), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 8% 10%, rgba(255, 246, 220, 0.7), transparent 60%),
+    var(--bg);
+}
+
+/* ━━━ nav ━━━ */
+
+.nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 56px;
+  font-size: 14px;
+}
+.logo {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.logoAccent {
+  color: var(--amber);
+}
+.navlinks {
+  display: flex;
+  gap: 36px;
+}
+.navlinks a {
+  color: var(--ink);
+  opacity: 0.7;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.navlinks a:hover {
+  opacity: 1;
+}
+.navcontact {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  color: var(--concrete);
+  font-size: 13px;
+  text-align: right;
+}
+
+/* ━━━ stage layout ━━━ */
+
+.stage {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 20px 56px 60px;
+}
+
+.headlineBlock {
+  position: relative;
+  z-index: 3;
+}
+.heading {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: clamp(48px, 6vw, 92px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.accent {
+  color: var(--amber);
+}
+.sub {
+  max-width: 380px;
+  margin-top: 28px;
+  color: var(--concrete);
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: var(--font-inter), sans-serif;
+}
+.divider {
+  width: 64px;
+  height: 2px;
+  background: var(--amber);
+  margin: 28px 0;
+}
+.ctaRow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 8px;
+}
+.cta {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 16px 30px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.cta:hover {
+  transform: translateY(-2px);
+  background: var(--steel);
+}
+.ctaIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ctaSecondary {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 13px;
+  color: var(--concrete);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ━━━ the hole-in-the-wall porthole ━━━ */
+
+.portholeWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.porthole {
+  position: relative;
+  width: min(46vw, 560px);
+  height: min(46vw, 640px);
+  filter: drop-shadow(0 30px 60px rgba(34, 31, 26, 0.16));
+}
+.plasterEdge {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 200deg,
+    #d9d2c4,
+    #b8b0a0 8%,
+    #eae3d6 14%,
+    #a49c8c 22%,
+    #d3ccbe 30%,
+    #8f877a 38%,
+    #e2dbcd 46%,
+    #b0a898 54%,
+    #dcd5c7 62%,
+    #948c7d 70%,
+    #e7e0d3 78%,
+    #aca496 86%,
+    #d9d2c4 100%
+  );
+  clip-path: path(
+    "M 280 6 C 420 6 520 90 542 220 C 560 330 540 460 460 560 C 380 650 180 650 100 560 C 20 460 0 320 20 210 C 42 90 140 6 280 6 Z"
+  );
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 62%, transparent 64%);
+  mask-image: radial-gradient(circle at 50% 50%, black 62%, transparent 64%);
+}
+.portholeInner {
+  position: absolute;
+  inset: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #cfd6d1 0%, #b9beb2 55%, #9a9184 100%);
+}
+.brickWall {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 52%;
+  background-color: #a15d40;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+  background-size: 46px 24px, 46px 24px;
+  background-position: 0 0, 23px 12px;
+}
+.brickWall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(154, 145, 132, 0.5), transparent 30%);
+}
+.scaffold {
+  position: absolute;
+  top: 6%;
+  bottom: 0;
+  left: 28%;
+  width: 10px;
+  background: linear-gradient(90deg, #c7cdc4, #8b9186, #c7cdc4);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+.scaffold2 {
+  position: absolute;
+  top: 34%;
+  left: 14%;
+  right: 14%;
+  height: 9px;
+  background: linear-gradient(180deg, #c7cdc4, #8b9186, #c7cdc4);
+}
+.siteLight {
+  position: absolute;
+  top: 2%;
+  left: 60%;
+  width: 200%;
+  height: 55%;
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.35), transparent 60%);
+  transform: translateX(-50%);
+}
+.bulbCord {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 22%;
+  background: rgba(40, 38, 30, 0.55);
+  transform: translateX(-50%);
+}
+.bulbGlow {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 238, 180, 0.85) 0%,
+    rgba(255, 220, 140, 0.35) 35%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: bulbFlicker 3.2s ease-in-out infinite;
+}
+.bulb {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 22px;
+  height: 28px;
+  transform: translate(-50%, -40%);
+  background: radial-gradient(circle at 50% 35%, #fffaf0, #ffe9a8 55%, #f2c667 100%);
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: 0 0 18px 6px rgba(255, 225, 140, 0.9), 0 0 40px 18px rgba(255, 225, 140, 0.4);
+  animation: bulbFlicker 3.2s ease-in-out infinite;
+}
+.bulb::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 10px;
+  height: 6px;
+  background: #8a8478;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+@keyframes bulbFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
+}
+.wordmark {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+}
+
+/* ━━━ right headline + scroll cue ━━━ */
+
+.headlineRight {
+  position: absolute;
+  right: 0;
+  bottom: 8%;
+  text-align: right;
+  z-index: 3;
+}
+.headlineRight .heading {
+  font-size: clamp(38px, 4.4vw, 68px);
+}
+
+.scrollCue {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--concrete);
+  z-index: 2;
+}
+.scrollCue .scrollLine {
+  width: 48px;
+  height: 1px;
+  background: var(--concrete);
+}
+
+/* ━━━ responsive ━━━ */
+
+@media (max-width: 980px) {
+  .stage {
+    grid-template-columns: 1fr;
+    padding: 10px 24px 40px;
+  }
+  .portholeWrap {
+    order: -1;
+    height: auto;
+    margin-bottom: 24px;
+  }
+  .porthole {
+    width: min(80vw, 420px);
+    height: min(90vw, 480px);
+  }
+  .headlineRight {
+    position: static;
+    text-align: left;
+    margin-top: 32px;
+  }
+  .nav {
+    padding: 22px 24px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .navlinks {
+    display: none;
+  }
+  .scrollCue {
+    position: static;
+    margin-top: 32px;
+  }
+}
