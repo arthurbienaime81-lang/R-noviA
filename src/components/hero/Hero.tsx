@@ -33,7 +33,12 @@ export function Hero() {
           <a href="#">Sécurité</a>
           <a href="#">Tarifs</a>
         </div>
-        <div className={styles.navcontact}>contact@renovia.fr</div>
+        <div className={styles.navRight}>
+          <Link href="/login" className={styles.navLogin}>
+            Se connecter
+          </Link>
+          <div className={styles.navcontact}>contact@renovia.fr</div>
+        </div>
       </nav>
 
       <div className={styles.stage}>

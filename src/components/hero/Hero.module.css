@@ -59,6 +59,24 @@
 .navlinks a:hover {
   opacity: 1;
 }
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+/* En dehors de .navlinks (masqué sous 980px) : les clients existants
+   doivent pouvoir se connecter aussi bien depuis le nav mobile. */
+.navLogin {
+  color: var(--ink);
+  opacity: 0.85;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: var(--font-inter), sans-serif;
+  transition: opacity 0.2s;
+}
+.navLogin:hover {
+  opacity: 1;
+}
 .navcontact {
   font-family: var(--font-ibm-plex-mono), monospace;
   color: var(--concrete);
@@ -318,7 +336,13 @@
 
 .headlineRight {
   position: absolute;
-  right: 0;
+  /* Un absolu positionné avec right:0 s'ancre au bord de la boîte de
+     padding de .stage, qui coïncide avec le bord réel du viewport (le
+     padding de .stage ne décale pas ce point d'ancrage) — le texte se
+     retrouvait donc collé, voire coupé, sur les grands écrans. On reprend
+     ici le même retrait que le padding horizontal du reste du hero (56px)
+     pour rester cohérent et ne jamais toucher le bord. */
+  right: 56px;
   bottom: 8%;
   text-align: right;
   z-index: 3;
