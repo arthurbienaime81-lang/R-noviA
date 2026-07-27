@@ -1,48 +1,56 @@
-import Link from "next/link";
-import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
-import { Porthole } from "./Porthole";
-import styles from "./Hero.module.css";
+"use client";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  variable: "--font-space-grotesk",
-});
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-inter",
-});
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["500"],
-  variable: "--font-ibm-plex-mono",
-});
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { spaceGrotesk, inter, ibmPlexMono } from "@/lib/fonts";
+import { Porthole } from "./Porthole";
+import { container, slideUp } from "./variants";
+import styles from "./Hero.module.css";
 
 export function Hero() {
   return (
-    <div
+    <motion.div
       className={`${styles.hero} ${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}
+      variants={container}
+      initial="hidden"
+      animate="show"
     >
       <nav className={styles.nav}>
-        <Link href="/" className={styles.logo}>
-          Réno<span className={styles.logoAccent}>via</span>
-        </Link>
+        <motion.div variants={slideUp}>
+          <Link href="/" className={`${styles.logo} ${styles.pill}`}>
+            Réno<span className={styles.logoAccent}>via</span>
+          </Link>
+        </motion.div>
         <div className={styles.navlinks}>
-          <a href="#">Fonctionnalités</a>
-          <a href="#">Sécurité</a>
-          <a href="#">Tarifs</a>
+          <motion.div variants={slideUp}>
+            <Link href="/fonctionnalites">Fonctionnalités</Link>
+          </motion.div>
         </div>
         <div className={styles.navRight}>
-          <Link href="/login" className={styles.navLogin}>
-            Se connecter
-          </Link>
-          <div className={styles.navcontact}>contact@renovia.fr</div>
+          <motion.div variants={slideUp}>
+            <Link
+              href="/fonctionnalites#comment-ca-marche"
+              className={`${styles.navLogin} ${styles.pill}`}
+            >
+              Fonctionnement
+            </Link>
+          </motion.div>
+          <motion.div variants={slideUp}>
+            <Link href="/login" className={`${styles.navLogin} ${styles.pill}`}>
+              Se connecter
+            </Link>
+          </motion.div>
+          <motion.div
+            className={`${styles.navcontact} ${styles.pill}`}
+            variants={slideUp}
+          >
+            contact@renovia.fr
+          </motion.div>
         </div>
       </nav>
 
       <div className={styles.stage}>
-        <div className={styles.headlineBlock}>
+        <motion.div className={styles.headlineBlock} variants={slideUp}>
           <h1 className={styles.heading}>
             On maîtrise
             <br />
@@ -58,28 +66,25 @@ export function Hero() {
               Essayer RenovIA
               <span className={styles.ctaIcon}>→</span>
             </Link>
-            <button type="button" className={styles.ctaSecondary}>
-              Voir une démo
-            </button>
           </div>
-        </div>
+        </motion.div>
 
         <Porthole />
 
-        <div className={styles.headlineRight}>
+        <motion.div className={styles.headlineRight} variants={slideUp}>
           <h1 className={styles.heading}>
             On livre
             <br />
             la <span className={styles.accent}>confiance.</span>
           </h1>
-        </div>
+        </motion.div>
 
-        <div className={styles.scrollCue}>
+        <motion.div className={styles.scrollCue} variants={slideUp}>
           <span>▾ DÉFILER</span>
           <span className={styles.scrollLine} />
           <span>POUR VOIR COMMENT</span>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

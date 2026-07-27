@@ -1,5 +1,11 @@
 import { Hero } from "@/components/hero/Hero";
+import { IntroScreen } from "@/components/intro/IntroScreen";
 
 export default function Home() {
-  return <Hero />;
+  return (
+    <>
+      <IntroScreen />
+      <Hero />
+    </>
+  );
 }

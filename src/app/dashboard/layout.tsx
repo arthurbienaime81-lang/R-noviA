@@ -24,7 +24,7 @@ export default async function DashboardLayout({
     .single();
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
+    <div className="flex min-h-screen bg-[#d4a94a]/[0.08]">
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <Header nomEntreprise={entreprise?.nom ?? ""} />

@@ -108,6 +108,19 @@ export default async function DashboardPage() {
           .in("chantier_id", chantierIds)
       : { data: [] };
 
+  const { data: messagesParChantier } =
+    chantierIds.length > 0
+      ? await supabase.from("messages").select("chantier_id").in("chantier_id", chantierIds)
+      : { data: [] };
+
+  const nombreMessagesParChantier = new Map<string, number>();
+  for (const { chantier_id } of messagesParChantier ?? []) {
+    nombreMessagesParChantier.set(
+      chantier_id,
+      (nombreMessagesParChantier.get(chantier_id) ?? 0) + 1,
+    );
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
       {ticketsUrgents && ticketsUrgents.length > 0 && (
@@ -188,13 +201,25 @@ export default async function DashboardPage() {
               {chantiers.map((chantier) => (
                 <tr key={chantier.id} className="hover:bg-slate-50">
                   <td className="px-6 py-4">
-                    <Link
-                      href={`/dashboard/chantiers/${chantier.id}`}
-                      className="text-sm font-medium text-slate-900 hover:underline"
-                    >
-                      {chantier.nom_client}
-                    </Link>
-                    <p className="text-xs text-slate-500">{chantier.adresse}</p>
+                    <div className="relative inline-block">
+                      {(nombreMessagesParChantier.get(chantier.id) ?? 0) > 0 && (
+                        <span
+                          className="absolute -left-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-slate-300 px-1 text-[10px] font-medium leading-none text-slate-700"
+                          title={`${nombreMessagesParChantier.get(chantier.id)} message${
+                            (nombreMessagesParChantier.get(chantier.id) ?? 0) > 1 ? "s" : ""
+                          }`}
+                        >
+                          {nombreMessagesParChantier.get(chantier.id)}
+                        </span>
+                      )}
+                      <Link
+                        href={`/dashboard/chantiers/${chantier.id}`}
+                        className="text-sm font-medium text-slate-900 hover:underline"
+                      >
+                        {chantier.nom_client}
+                      </Link>
+                      <p className="text-xs text-slate-500">{chantier.adresse}</p>
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <StatutBadge statut={chantier.statut} />
