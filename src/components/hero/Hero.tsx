@@ -28,14 +28,6 @@ export function Hero() {
         </div>
         <div className={styles.navRight}>
           <motion.div variants={slideUp}>
-            <Link
-              href="/fonctionnalites#comment-ca-marche"
-              className={`${styles.navLogin} ${styles.pill}`}
-            >
-              Fonctionnement
-            </Link>
-          </motion.div>
-          <motion.div variants={slideUp}>
             <Link href="/login" className={`${styles.navLogin} ${styles.pill}`}>
               Se connecter
             </Link>

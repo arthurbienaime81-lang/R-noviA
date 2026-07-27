@@ -4,7 +4,7 @@ import { IntroScreen } from "@/components/intro/IntroScreen";
 export default function Home() {
   return (
     <>
-      <IntroScreen />
+      <IntroScreen storageKey="renovia-intro-vue" trigger="auto" />
       <Hero />
     </>
   );

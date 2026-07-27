@@ -180,6 +180,9 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  /* Recentré légèrement vers l'intérieur : sur certaines fenêtres, le
+     cercle se retrouvait trop proche du bord droit de l'écran. */
+  transform: translateX(-6%);
 }
 .porthole {
   position: relative;

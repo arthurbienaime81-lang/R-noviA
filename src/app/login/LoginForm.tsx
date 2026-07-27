@@ -1,17 +1,40 @@
 "use client";
 
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import Link from "next/link";
 import { login, type AuthState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { primeIntroAudio } from "@/lib/introAudio";
 
 const initialState: AuthState = { error: null };
+const LOGIN_INTRO_FLAG = "renovia-show-login-intro";
 
 export function LoginForm({ redirectTo }: { redirectTo: string }) {
   const [state, formAction] = useFormState(login, initialState);
 
+  useEffect(() => {
+    // Identifiants refusés : la connexion n'a pas abouti, on retire le
+    // drapeau posé au clic pour ne pas déclencher l'intro à tort lors d'une
+    // future arrivée sur le dashboard (session déjà ouverte par ailleurs).
+    if (state.error) {
+      sessionStorage.removeItem(LOGIN_INTRO_FLAG);
+    }
+  }, [state.error]);
+
   return (
-    <form action={formAction} className="space-y-4">
+    <form
+      action={formAction}
+      onSubmit={() => {
+        // Synchrone, dans la continuité directe du clic sur "Se connecter" :
+        // pose le drapeau qui déclenchera l'écran d'intro sur le dashboard
+        // et débloque la lecture audio, avant même que l'action serveur
+        // (asynchrone) ne démarre.
+        sessionStorage.setItem(LOGIN_INTRO_FLAG, "1");
+        primeIntroAudio();
+      }}
+      className="space-y-4"
+    >
       <input type="hidden" name="redirectTo" value={redirectTo} />
 
       {state.error && (

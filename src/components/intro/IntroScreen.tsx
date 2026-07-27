@@ -3,39 +3,60 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { spaceGrotesk } from "@/lib/fonts";
+import { playBonjour, playChime } from "@/lib/introAudio";
 
-const SESSION_KEY = "renovia-intro-vue";
-const DUREE_TEXTE_MS = 5000;
+const DUREE_TEXTE_MS = 3000;
 const DUREE_ALLUMAGE_MS = 700;
 const DUREE_REVELATION_MS = 650;
 
 type Phase = "texte" | "allumage" | "revelation";
 
-export function IntroScreen() {
+type Props = {
+  /** Clé sessionStorage utilisée pour n'afficher l'intro qu'une fois par session. */
+  storageKey: string;
+  /**
+   * "auto" : s'affiche par défaut au montage, sauf si déjà vue cette session
+   * (cas de la page d'accueil).
+   * "flag" : ne s'affiche que si `storageKey` vaut "1" dans sessionStorage —
+   * posé explicitement par l'action qui précède (ex. clic sur "Se connecter").
+   */
+  trigger: "auto" | "flag";
+};
+
+export function IntroScreen({ storageKey, trigger }: Props) {
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<Phase>("texte");
 
   useEffect(() => {
-    // Une seule fois par session : ne rejoue pas si le visiteur revient sur
-    // la page d'accueil plus tard dans le même onglet.
-    //
-    // Le marquage sessionStorage n'a lieu qu'à la fin de la séquence, pas
-    // au démarrage : en développement, React StrictMode monte cet effet
-    // deux fois de suite (monte → nettoie → remonte). Si la clé était
-    // écrite immédiatement, le second montage la trouverait déjà posée et
-    // n'ancrerait jamais ses propres minuteurs, laissant l'écran bloqué
-    // sur la phase texte indéfiniment.
-    if (sessionStorage.getItem(SESSION_KEY)) return;
-    setVisible(true);
+    const shouldShow =
+      trigger === "auto"
+        ? !sessionStorage.getItem(storageKey)
+        : sessionStorage.getItem(storageKey) === "1";
+    if (!shouldShow) return;
 
-    const versAllumage = setTimeout(() => setPhase("allumage"), DUREE_TEXTE_MS);
+    setVisible(true);
+    playBonjour();
+
+    const versAllumage = setTimeout(() => {
+      setPhase("allumage");
+      playChime();
+    }, DUREE_TEXTE_MS);
     const versRevelation = setTimeout(
       () => setPhase("revelation"),
       DUREE_TEXTE_MS + DUREE_ALLUMAGE_MS,
     );
     const versFin = setTimeout(() => {
       setVisible(false);
-      sessionStorage.setItem(SESSION_KEY, "1");
+      // Marquage différé à la toute fin de la séquence (pas au démarrage) :
+      // en dev, React StrictMode monte cet effet deux fois de suite
+      // (monte → nettoie → remonte). Si la clé était écrite/retirée
+      // immédiatement, le second montage verrait un état déjà modifié par
+      // le premier montage et n'ancrerait jamais ses propres minuteurs.
+      if (trigger === "auto") {
+        sessionStorage.setItem(storageKey, "1");
+      } else {
+        sessionStorage.removeItem(storageKey);
+      }
     }, DUREE_TEXTE_MS + DUREE_ALLUMAGE_MS + DUREE_REVELATION_MS);
 
     return () => {
@@ -43,7 +64,7 @@ export function IntroScreen() {
       clearTimeout(versRevelation);
       clearTimeout(versFin);
     };
-  }, []);
+  }, [storageKey, trigger]);
 
   return (
     <AnimatePresence>
@@ -55,16 +76,33 @@ export function IntroScreen() {
         >
           <AnimatePresence>
             {phase === "texte" && (
-              <motion.p
+              <motion.div
                 key="texte"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight text-white sm:text-4xl"
+                className="flex flex-col items-center gap-3"
               >
-                RenovIA
-              </motion.p>
+                <p className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  RenovIA
+                </p>
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M3 11.5L12 4l9 7.5" />
+                  <path d="M5.5 10v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-9" />
+                  <path d="M9.5 20v-6h5v6" />
+                </svg>
+              </motion.div>
             )}
           </AnimatePresence>
 

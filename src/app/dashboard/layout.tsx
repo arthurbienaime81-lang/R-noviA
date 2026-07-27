@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { IntroScreen } from "@/components/intro/IntroScreen";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 
@@ -25,6 +26,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-[#d4a94a]/[0.08]">
+      <IntroScreen storageKey="renovia-show-login-intro" trigger="flag" />
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <Header nomEntreprise={entreprise?.nom ?? ""} />
