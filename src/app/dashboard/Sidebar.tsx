@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import styles from "./dashboard.module.css";
 
 const LINKS = [
   { href: "/dashboard", label: "Chantiers" },
@@ -13,11 +14,11 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-56 shrink-0 border-r border-slate-200 bg-white sm:flex sm:flex-col">
+    <aside className="relative z-10 hidden w-56 shrink-0 sm:flex sm:flex-col">
       <div className="px-5 py-5">
         <p className="text-lg font-semibold text-slate-900">RenovIA</p>
       </div>
-      <nav className="flex flex-col gap-1 px-3">
+      <nav className="flex flex-col gap-2 px-3">
         {LINKS.map((link) => {
           const active =
             link.href === "/dashboard"
@@ -27,10 +28,8 @@ export function Sidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                active
-                  ? "bg-blue-50 text-[#2563EB]"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+              className={`${styles.navPill} ${active ? styles.navPillActive : ""} px-3 py-2 text-sm font-medium transition-colors ${
+                active ? "text-[#2563EB]" : "text-slate-700 hover:text-slate-900"
               }`}
             >
               {link.label}
