@@ -57,27 +57,11 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 1px 2px rgba(34, 31, 26, 0.06);
 }
-.navlinks {
-  display: flex;
-  gap: 36px;
-}
-.navlinks a {
-  color: var(--ink);
-  opacity: 0.7;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s;
-}
-.navlinks a:hover {
-  opacity: 1;
-}
 .navRight {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-/* En dehors de .navlinks (masqué sous 980px) : les clients existants
-   doivent pouvoir se connecter aussi bien depuis le nav mobile. */
 .navLogin {
   color: var(--ink);
   opacity: 0.85;
@@ -182,7 +166,7 @@
   height: 100%;
   /* Recentré légèrement vers l'intérieur : sur certaines fenêtres, le
      cercle se retrouvait trop proche du bord droit de l'écran. */
-  transform: translateX(-6%);
+  transform: translateX(-9%);
 }
 .porthole {
   position: relative;
@@ -215,9 +199,12 @@
     #aca496 86%,
     #d9d2c4 100%
   );
-  clip-path: path(
-    "M 280 6 C 420 6 520 90 542 220 C 560 330 540 460 460 560 C 380 650 180 650 100 560 C 20 460 0 320 20 210 C 42 90 140 6 280 6 Z"
-  );
+  /* Découpe définie en SVG (voir Porthole.tsx) avec clipPathUnits=
+     "objectBoundingBox" plutôt qu'un clip-path CSS path() : ce dernier
+     utilise des coordonnées en pixels absolus qui ne s'adaptent jamais à la
+     taille réelle de l'élément, tronquant la bordure dès que le hublot est
+     plus petit que le gabarit d'origine. */
+  clip-path: url(#portholeClip);
   -webkit-mask-image: radial-gradient(circle at 50% 50%, black 62%, transparent 64%);
   mask-image: radial-gradient(circle at 50% 50%, black 62%, transparent 64%);
 }
@@ -412,9 +399,6 @@
     padding: 22px 24px;
     flex-wrap: wrap;
     gap: 14px;
-  }
-  .navlinks {
-    display: none;
   }
   .navRight {
     flex-wrap: wrap;

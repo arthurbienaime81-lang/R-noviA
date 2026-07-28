@@ -1,0 +1,15 @@
+/* Reprend le dégradé or de la landing page (Hero.module.css), mais très
+   affaibli sur une base claire et opaque — plutôt qu'une superposition
+   translucide, qui se mélangeait avec le fond sombre du thème système en
+   mode sombre (body { background: #0a0a0a }) et rendait le dashboard
+   quasiment noir. Un fond explicite et opaque reste immunisé contre
+   prefers-color-scheme, quel que soit le thème du visiteur. */
+.dashboardBg {
+  background:
+    linear-gradient(120deg, rgba(255, 244, 214, 0.4) 0%, transparent 20%),
+    linear-gradient(-40deg, rgba(120, 84, 20, 0.1) 4%, transparent 30%),
+    linear-gradient(105deg, transparent 40%, rgba(255, 240, 200, 0.3) 52%, transparent 66%),
+    radial-gradient(ellipse 900px 700px at 80% 75%, rgba(120, 84, 20, 0.07), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 8% 10%, rgba(255, 246, 220, 0.4), transparent 60%),
+    #fdfaf2;
+}

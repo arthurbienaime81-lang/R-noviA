@@ -48,6 +48,22 @@ export function Porthole() {
 
   return (
     <motion.div className={styles.portholeWrap} variants={slideUp}>
+      {/* Définition de la découpe organique du hublot en coordonnées
+          normalisées (clipPathUnits="objectBoundingBox") : contrairement à
+          un clip-path CSS "path()" — dont les coordonnées sont des pixels
+          absolus qui ne s'adaptent jamais à la taille réelle de l'élément —
+          cette version reste toujours proportionnelle à la boîte, même
+          quand le hublot est bien plus petit que le gabarit d'origine
+          (560×640). Sans ça, la bordure métallique n'était complète que sur
+          un hublot d'exactement cette taille en pixels, et se retrouvait
+          tronquée sur tout écran plus modeste. */}
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
+        <defs>
+          <clipPath id="portholeClip" clipPathUnits="objectBoundingBox">
+            <path d="M 0.5 0.009375 C 0.75 0.009375 0.928571 0.140625 0.967857 0.34375 C 1 0.515625 0.964286 0.71875 0.821429 0.875 C 0.678571 1.015625 0.321429 1.015625 0.178571 0.875 C 0.035714 0.71875 0 0.5 0.035714 0.328125 C 0.075 0.140625 0.25 0.009375 0.5 0.009375 Z" />
+          </clipPath>
+        </defs>
+      </svg>
       <div className={styles.porthole}>
         <div className={styles.plasterEdge} />
         <div className={styles.portholeInner}>

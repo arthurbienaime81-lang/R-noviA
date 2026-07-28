@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { IntroScreen } from "@/components/intro/IntroScreen";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import styles from "./dashboard.module.css";
 
 export default async function DashboardLayout({
   children,
@@ -25,7 +26,7 @@ export default async function DashboardLayout({
     .single();
 
   return (
-    <div className="flex min-h-screen bg-[#d4a94a]/[0.08]">
+    <div className={`flex min-h-screen ${styles.dashboardBg}`}>
       <IntroScreen storageKey="renovia-show-login-intro" trigger="flag" />
       <Sidebar />
       <div className="flex flex-1 flex-col">

@@ -21,12 +21,15 @@ export function Hero() {
             Réno<span className={styles.logoAccent}>via</span>
           </Link>
         </motion.div>
-        <div className={styles.navlinks}>
-          <motion.div variants={slideUp}>
-            <Link href="/fonctionnalites">Fonctionnalités</Link>
-          </motion.div>
-        </div>
         <div className={styles.navRight}>
+          <motion.div variants={slideUp}>
+            <Link
+              href="/fonctionnalites#comment-ca-marche"
+              className={`${styles.navLogin} ${styles.pill}`}
+            >
+              Fonctionnement
+            </Link>
+          </motion.div>
           <motion.div variants={slideUp}>
             <Link href="/login" className={`${styles.navLogin} ${styles.pill}`}>
               Se connecter
