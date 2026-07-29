@@ -32,6 +32,10 @@ export async function register(
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {
+    // Le détail technique (error.message) reste dans les logs serveur pour le
+    // diagnostic, mais ne doit jamais être répercuté tel quel à l'utilisateur
+    // (fuite d'informations d'implémentation) — seul le cas "email déjà
+    // utilisé" est suffisamment sûr et utile pour être affiché explicitement.
     if (error) {
       console.error("[register] supabase.auth.signUp error:", error.status, error.message);
     }
@@ -39,7 +43,7 @@ export async function register(
       error:
         error?.message === "User already registered"
           ? "Un compte existe déjà avec cet email."
-          : `Impossible de créer le compte : ${error?.message ?? "erreur inconnue"}.`,
+          : "Impossible de créer le compte pour le moment. Merci de réessayer.",
       info: null,
     };
   }

@@ -13,6 +13,14 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+// Requis pour une CSP par nonce (voir src/middleware.ts) : une page
+// pré-rendue statiquement fige son nonce au moment du build, qui ne peut
+// alors plus jamais correspondre au nonce généré à chaque requête — le
+// navigateur bloquerait alors tous les scripts, y compris ceux de Next.js
+// lui-même. Next.js documente ce compromis comme la contrepartie normale
+// d'une CSP par nonce.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "RenovIA — Gestion de chantiers TCE",
   description:
