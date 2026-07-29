@@ -81,7 +81,7 @@ export async function submitReclamation(
   // Anti-spam : au-delà de 5 réclamations pour ce chantier en 10 minutes,
   // on bloque (usage légitime très improbable à ce rythme, protège contre
   // un lien de suivi partagé/intercepté utilisé pour spammer l'entreprise).
-  if (!(await sousLaLimite(admin, "reclamations", chantier.id, 5, 10))) {
+  if (!(await sousLaLimite(admin, "reclamations", "chantier_id", chantier.id, 5, 10))) {
     return {
       error:
         "Trop de réclamations envoyées récemment pour ce chantier. Merci de réessayer plus tard.",
@@ -301,7 +301,7 @@ export async function sendMessageClient(
 
   // Anti-spam : messagerie plus tolérante que les réclamations (usage
   // conversationnel), mais toujours plafonnée par chantier.
-  if (!(await sousLaLimite(admin, "messages", chantier.id, 20, 5))) {
+  if (!(await sousLaLimite(admin, "messages", "chantier_id", chantier.id, 20, 5))) {
     return {
       error: "Trop de messages envoyés récemment. Merci de réessayer plus tard.",
       success: false,
