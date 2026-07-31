@@ -67,6 +67,43 @@ export function IntroScreen({ storageKey, trigger }: Props) {
     };
   }, [storageKey, trigger]);
 
+  useEffect(() => {
+    // Pendant que l'écran d'intro (fond noir) est affiché, deux choses
+    // doivent suivre la même couleur, sans quoi le rebond élastique d'iOS
+    // Safari révèle brièvement du blanc (ou l'or/le fond du dashboard en
+    // dessous) en haut/bas d'écran :
+    // 1. La barre d'adresse/outils (balise theme-color).
+    // 2. Le fond du <body> lui-même — appliqué en style inline plutôt que
+    //    via un sélecteur CSS ciblant un enfant direct, car IntroScreen
+    //    n'est pas toujours un enfant direct de body (il l'est sur "/",
+    //    mais pas dans le layout du dashboard, où il est imbriqué dans le
+    //    conteneur du fond animé).
+    if (!visible) return;
+
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    const existedBefore = Boolean(meta);
+    const previousContent = meta?.getAttribute("content") ?? null;
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "theme-color");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", "#000000");
+
+    const previousBodyBg = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "#000000";
+
+    return () => {
+      if (existedBefore) {
+        meta!.setAttribute("content", previousContent ?? "");
+      } else {
+        meta!.remove();
+      }
+      document.body.style.backgroundColor = previousBodyBg;
+    };
+  }, [visible]);
+
   return (
     <AnimatePresence>
       {visible && (
