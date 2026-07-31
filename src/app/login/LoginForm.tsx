@@ -59,10 +59,10 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
 
       <div>
         <div className="flex items-center justify-between">
-          <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+          <label htmlFor="password" className="block text-sm font-medium text-[#8e6c22]">
             Mot de passe
           </label>
-          <Link href="/reset-password" className="text-xs font-medium text-[#2563EB] hover:underline">
+          <Link href="/reset-password" className="text-xs font-medium text-[#8e6c22] hover:underline">
             Mot de passe oublié ?
           </Link>
         </div>
@@ -76,13 +76,16 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
         />
       </div>
 
-      <SubmitButton className="w-full" pendingLabel="Connexion...">
+      <SubmitButton
+        className="w-full !bg-[#23261c] !text-[#d4a94a] hover:!bg-[#3a3d2e]"
+        pendingLabel="Connexion..."
+      >
         Se connecter
       </SubmitButton>
 
       <p className="text-center text-sm text-slate-500">
         Pas encore de compte ?{" "}
-        <Link href="/register" className="font-medium text-[#2563EB] hover:underline">
+        <Link href="/register" className="font-medium text-[#8e6c22] hover:underline">
           Créer un compte
         </Link>
       </p>

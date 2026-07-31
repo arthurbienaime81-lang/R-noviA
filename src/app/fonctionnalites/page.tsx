@@ -140,7 +140,7 @@ export default function FonctionnalitesPage() {
         <h1 className="mt-4 font-[family-name:var(--font-space-grotesk)] text-4xl font-bold uppercase leading-[1.05] tracking-tight sm:text-5xl">
           Le SAV de vos chantiers,
           <br />
-          <span className="text-[#a15d40]">sans rien faire manuellement.</span>
+          <span className="text-[#8e6c22]">sans rien faire manuellement.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#5c4a1e]">
           RenovIA centralise le suivi d&apos;avancement, les réclamations et les
@@ -210,7 +210,7 @@ export default function FonctionnalitesPage() {
               className="flex flex-col gap-4 border-l-2 border-[#e3d6b8] pl-6 sm:flex-row sm:gap-8"
             >
               <div className="shrink-0 sm:w-32">
-                <span className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[#a15d40]">
+                <span className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[#8e6c22]">
                   {etape.numero}
                 </span>
                 <p className="mt-1 font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-wide text-[#5c4a1e]">
