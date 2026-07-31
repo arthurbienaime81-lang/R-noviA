@@ -73,12 +73,6 @@ export function Hero() {
             la <span className={styles.accent}>confiance.</span>
           </h1>
         </motion.div>
-
-        <motion.div className={styles.scrollCue} variants={slideUp}>
-          <span>▾ DÉFILER</span>
-          <span className={styles.scrollLine} />
-          <span>POUR VOIR COMMENT</span>
-        </motion.div>
       </div>
     </motion.div>
   );
