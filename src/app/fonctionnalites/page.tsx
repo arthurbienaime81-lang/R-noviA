@@ -123,7 +123,7 @@ export default function FonctionnalitesPage() {
           href="/"
           className="font-[family-name:var(--font-space-grotesk)] text-xl font-bold"
         >
-          Réno<span className="text-[#a15d40]">via</span>
+          Réno<span className="text-[#886820]">via</span>
         </Link>
         <Link
           href="/register"
@@ -134,13 +134,13 @@ export default function FonctionnalitesPage() {
       </header>
 
       <section className="mx-auto max-w-3xl px-6 py-16 text-center sm:px-14">
-        <p className="font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-[0.15em] text-[#a15d40]">
+        <p className="font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-[0.15em] text-[#886820]">
           Fonctionnalités
         </p>
         <h1 className="mt-4 font-[family-name:var(--font-space-grotesk)] text-4xl font-bold uppercase leading-[1.05] tracking-tight sm:text-5xl">
           Le SAV de vos chantiers,
           <br />
-          <span className="text-[#8e6c22]">sans rien faire manuellement.</span>
+          <span className="text-[#886820]">sans rien faire manuellement.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#5c4a1e]">
           RenovIA centralise le suivi d&apos;avancement, les réclamations et les
@@ -170,7 +170,7 @@ export default function FonctionnalitesPage() {
             key={stat.chiffre}
             className="rounded-2xl border border-[#e3d6b8] bg-white/60 p-6 text-center"
           >
-            <p className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[#a15d40]">
+            <p className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[#886820]">
               {stat.chiffre}
             </p>
             <p className="mt-2 text-sm text-[#5c4a1e]">{stat.legende}</p>
@@ -192,7 +192,7 @@ export default function FonctionnalitesPage() {
         id="comment-ca-marche"
         className="mx-auto max-w-3xl scroll-mt-10 px-6 py-20 sm:px-14"
       >
-        <p className="font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-[0.15em] text-[#a15d40]">
+        <p className="font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-[0.15em] text-[#886820]">
           Fonctionnement
         </p>
         <h2 className="mt-3 font-[family-name:var(--font-space-grotesk)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
@@ -210,7 +210,7 @@ export default function FonctionnalitesPage() {
               className="flex flex-col gap-4 border-l-2 border-[#e3d6b8] pl-6 sm:flex-row sm:gap-8"
             >
               <div className="shrink-0 sm:w-32">
-                <span className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[#8e6c22]">
+                <span className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[#886820]">
                   {etape.numero}
                 </span>
                 <p className="mt-1 font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-wide text-[#5c4a1e]">
@@ -232,7 +232,7 @@ export default function FonctionnalitesPage() {
 
       <section className="border-t border-[#e3d6b8] bg-white/40 px-6 py-20 sm:px-14">
         <div className="mx-auto max-w-4xl">
-          <p className="font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-[0.15em] text-[#a15d40]">
+          <p className="font-[family-name:var(--font-ibm-plex-mono)] text-xs uppercase tracking-[0.15em] text-[#886820]">
             Détail technique
           </p>
           <h2 className="mt-3 font-[family-name:var(--font-space-grotesk)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
@@ -261,7 +261,7 @@ export default function FonctionnalitesPage() {
         <h2 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
           On maîtrise le chantier.
           <br />
-          <span className="text-[#a15d40]">On livre la confiance.</span>
+          <span className="text-[#886820]">On livre la confiance.</span>
         </h2>
         <Link
           href="/register"

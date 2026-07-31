@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { LoginForm } from "./LoginForm";
+import { LoginCard } from "./LoginCard";
 import goldBg from "@/styles/goldBackground.module.css";
 
 export const metadata: Metadata = {
@@ -20,9 +21,9 @@ export default function LoginPage({
   return (
     <main
       data-gold-bg
-      className={`flex min-h-dvh items-center justify-center px-6 ${goldBg.goldBackground}`}
+      className={`flex min-h-dvh items-center justify-center overflow-x-hidden px-6 ${goldBg.goldBackground}`}
     >
-      <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+      <LoginCard>
         <div className="mb-6 text-center">
           <p className="text-lg font-semibold text-slate-900">RenovIA</p>
           <h1 className="mt-2 text-xl font-semibold text-slate-900">
@@ -33,7 +34,7 @@ export default function LoginPage({
           </p>
         </div>
         <LoginForm redirectTo={searchParams.redirectTo ?? "/dashboard"} />
-      </div>
+      </LoginCard>
     </main>
   );
 }

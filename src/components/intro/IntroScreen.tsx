@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { spaceGrotesk } from "@/lib/fonts";
 import { playBonjour, playChime } from "@/lib/introAudio";
 
@@ -26,6 +26,7 @@ type Props = {
 export function IntroScreen({ storageKey, trigger }: Props) {
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<Phase>("texte");
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const shouldShow =
@@ -84,9 +85,14 @@ export function IntroScreen({ storageKey, trigger }: Props) {
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-col items-center gap-3"
               >
-                <p className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                <motion.p
+                  className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight text-white sm:text-4xl"
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: shouldReduceMotion ? 0 : 360 }}
+                  transition={{ duration: shouldReduceMotion ? 0 : 1, ease: "easeInOut" }}
+                >
                   RenovIA
-                </p>
+                </motion.p>
                 <svg
                   width="26"
                   height="26"

@@ -59,7 +59,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
 
       <div>
         <div className="flex items-center justify-between">
-          <label htmlFor="password" className="block text-sm font-medium text-[#8e6c22]">
+          <label htmlFor="password" className="block text-sm font-medium text-slate-700">
             Mot de passe
           </label>
           <Link href="/reset-password" className="text-xs font-medium text-[#8e6c22] hover:underline">
