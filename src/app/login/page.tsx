@@ -1,9 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { LoginForm } from "./LoginForm";
 import goldBg from "@/styles/goldBackground.module.css";
 
 export const metadata: Metadata = {
   title: "Connexion | RenovIA",
+};
+
+// Même couleur de base que le fond or du hero (goldBackground.module.css) —
+// voir la note dans src/app/page.tsx.
+export const viewport: Viewport = {
+  themeColor: "#d4a94a",
 };
 
 export default function LoginPage({
