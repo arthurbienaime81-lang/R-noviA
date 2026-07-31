@@ -79,3 +79,26 @@
   background: rgba(37, 99, 235, 0.14);
   border-color: rgba(37, 99, 235, 0.35);
 }
+
+/* Bouton hamburger (mobile) : même recette .navPill, en carré. Sur le fond
+   blanc opaque du header, l'effet "verre dépoli" reste discret (pas de
+   dégradé coloré derrière à révéler) mais garde la même forme/ombre/bordure
+   que les autres bulles de l'app pour une cohérence visuelle. */
+.hamburgerButton {
+  display: flex;
+  height: 36px;
+  width: 36px;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+}
+
+/* Panneau du drawer mobile : version plus opaque de la même recette verre
+   dépoli (pas seulement 35% comme les pilules) pour que les liens restent
+   lisibles quel que soit le contenu de la page derrière. */
+.drawerPanel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 4px 0 24px rgba(34, 31, 26, 0.14);
+}
