@@ -1,0 +1,16 @@
+/* Fond or de la landing page (dégradé + bandes diagonales métalliques),
+   extrait ici pour être partagé entre le hero et toute autre page qui doit
+   reprendre exactement la même identité visuelle (ex. /login) — une seule
+   source, pour ne jamais dupliquer/désynchroniser ce dégradé si on le
+   retouche plus tard. --gold-bg est défini une fois dans globals.css. */
+.goldBackground {
+  --bg: var(--gold-bg, #d4a94a);
+  background:
+    linear-gradient(120deg, rgba(255, 244, 214, 0.75) 0%, transparent 16%),
+    linear-gradient(-40deg, rgba(120, 84, 20, 0.55) 4%, transparent 26%),
+    linear-gradient(105deg, transparent 38%, rgba(255, 240, 200, 0.6) 50%, transparent 62%),
+    linear-gradient(-55deg, transparent 58%, rgba(120, 84, 20, 0.4) 70%, transparent 84%),
+    radial-gradient(ellipse 900px 700px at 80% 70%, rgba(120, 84, 20, 0.4), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 8% 10%, rgba(255, 246, 220, 0.7), transparent 60%),
+    var(--bg);
+}

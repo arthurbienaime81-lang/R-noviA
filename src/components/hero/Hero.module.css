@@ -1,6 +1,7 @@
 .hero {
+  composes: goldBackground from "../../styles/goldBackground.module.css";
+
   --ink: #23261c;
-  --bg: #d4a94a;
   --bg-2: #b8892f;
   --concrete: #5c4a1e;
   --amber: #a15d40;
@@ -8,19 +9,12 @@
 
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   color: var(--ink);
   font-family: var(--font-inter), sans-serif;
-  background:
-    linear-gradient(120deg, rgba(255, 244, 214, 0.75) 0%, transparent 16%),
-    linear-gradient(-40deg, rgba(120, 84, 20, 0.55) 4%, transparent 26%),
-    linear-gradient(105deg, transparent 38%, rgba(255, 240, 200, 0.6) 50%, transparent 62%),
-    linear-gradient(-55deg, transparent 58%, rgba(120, 84, 20, 0.4) 70%, transparent 84%),
-    radial-gradient(ellipse 900px 700px at 80% 70%, rgba(120, 84, 20, 0.4), transparent 60%),
-    radial-gradient(ellipse 800px 600px at 8% 10%, rgba(255, 246, 220, 0.7), transparent 60%),
-    var(--bg);
 }
 
 /* ━━━ nav ━━━ */

@@ -10,6 +10,7 @@ import styles from "./Hero.module.css";
 export function Hero() {
   return (
     <motion.div
+      data-gold-bg
       className={`${styles.hero} ${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}
       variants={container}
       initial="hidden"
