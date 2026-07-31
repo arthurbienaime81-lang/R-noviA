@@ -116,6 +116,32 @@ export function NewChantierModal() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-slate-700">
+                    Type de travaux
+                  </label>
+                  <input
+                    name="type_travaux"
+                    type="text"
+                    placeholder="Ex. Rénovation salle de bain"
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700">
+                    Montant (€)
+                  </label>
+                  <input
+                    name="montant"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700">
                     Date de début
                   </label>
                   <input
@@ -135,6 +161,15 @@ export function NewChantierModal() {
                   />
                 </div>
               </div>
+
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                <input
+                  name="urgent"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
+                />
+                Marquer comme urgent
+              </label>
 
               <p className="text-xs text-slate-500">
                 Les 4 étapes par défaut (Démolition, Gros œuvre, Finitions,

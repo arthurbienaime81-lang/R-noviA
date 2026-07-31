@@ -28,6 +28,10 @@ export async function createChantier(
   const description = String(formData.get("description") ?? "").trim();
   const date_debut = String(formData.get("date_debut") ?? "") || null;
   const date_fin_prevue = String(formData.get("date_fin_prevue") ?? "") || null;
+  const type_travaux = String(formData.get("type_travaux") ?? "").trim();
+  const urgent = formData.get("urgent") === "on";
+  const montantSaisi = String(formData.get("montant") ?? "").trim();
+  const montant = montantSaisi ? Number(montantSaisi) : null;
 
   if (!nom_client || !email_client || !adresse) {
     return {
@@ -35,6 +39,9 @@ export async function createChantier(
         "Merci de renseigner au minimum le nom du client, son email et l'adresse.",
       success: false,
     };
+  }
+  if (montantSaisi && !Number.isFinite(montant)) {
+    return { error: "Le montant doit être un nombre valide.", success: false };
   }
 
   const supabase = createClient();
@@ -67,6 +74,9 @@ export async function createChantier(
       description: description || null,
       date_debut,
       date_fin_prevue,
+      type_travaux: type_travaux || null,
+      urgent,
+      montant,
     })
     .select("id, lien_token")
     .single();

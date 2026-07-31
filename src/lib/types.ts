@@ -37,6 +37,10 @@ export interface Chantier {
   photo_cloture_url: string | null;
   date_cloture: string | null;
   date_limite_contestation: string | null;
+  numero_dossier: string;
+  type_travaux: string | null;
+  urgent: boolean;
+  montant: number | null;
   lien_token: string;
   created_at: string;
 }

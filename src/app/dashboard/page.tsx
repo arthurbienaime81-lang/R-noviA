@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { getOrigin } from "@/lib/utils";
 import { formatDate } from "@/lib/format";
 import { sendRetardAlert } from "@/lib/emails";
 import type { Chantier } from "@/lib/types";
-import { StatutBadge } from "@/components/StatutBadge";
-import { ProgressBar } from "@/components/ProgressBar";
-import { CopyLinkButton } from "@/components/CopyLinkButton";
-import { VerifierRelancesButton } from "@/components/VerifierRelancesButton";
-import { NewChantierModal } from "./NewChantierModal";
+import { StatCard } from "@/components/StatCard";
+import { StatutBreakdown } from "@/components/StatutBreakdown";
+import { AlertesIABanner } from "@/components/AlertesIABanner";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const metadata: Metadata = {
@@ -55,6 +51,13 @@ async function flagChantiersEnRetard(
   );
 }
 
+function estDansLeMoisCourant(dateIso: string | null) {
+  if (!dateIso) return false;
+  const d = new Date(dateIso);
+  const now = new Date();
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+}
+
 export default async function DashboardPage() {
   const supabase = createClient();
   const {
@@ -91,12 +94,6 @@ export default async function DashboardPage() {
     entreprise.email,
   );
 
-  const origin = getOrigin();
-  const total = chantiers.length;
-  const enCours = chantiers.filter((c) => c.statut === "en_cours").length;
-  const enRetard = chantiers.filter((c) => c.statut === "en_retard").length;
-  const termines = chantiers.filter((c) => c.statut === "termine").length;
-
   const chantierIds = chantiers.map((c) => c.id);
   const { data: ticketsUrgents } =
     chantierIds.length > 0
@@ -108,154 +105,68 @@ export default async function DashboardPage() {
           .in("chantier_id", chantierIds)
       : { data: [] };
 
-  const { data: messagesParChantier } =
-    chantierIds.length > 0
-      ? await supabase.from("messages").select("chantier_id").in("chantier_id", chantierIds)
-      : { data: [] };
+  // ━━━ Stats 2x2 ━━━
+  const chantiersOuverts = chantiers.filter((c) => c.statut !== "termine").length;
+  const enRetard = chantiers.filter((c) => c.statut === "en_retard").length;
+  const livresCeMois = chantiers.filter(
+    (c) => c.statut === "termine" && estDansLeMoisCourant(c.date_cloture),
+  ).length;
+  const receptionsPretes = chantiers.filter(
+    (c) => c.statut === "en_cours" && c.progression === 100,
+  ).length;
 
-  const nombreMessagesParChantier = new Map<string, number>();
-  for (const { chantier_id } of messagesParChantier ?? []) {
-    nombreMessagesParChantier.set(
-      chantier_id,
-      (nombreMessagesParChantier.get(chantier_id) ?? 0) + 1,
-    );
-  }
+  // ━━━ Répartition par statut ━━━
+  const repartition = [
+    { label: "En cours", count: chantiers.filter((c) => c.statut === "en_cours").length },
+    { label: "En retard", count: enRetard },
+    { label: "Contesté", count: chantiers.filter((c) => c.statut === "conteste").length },
+    { label: "Terminé", count: chantiers.filter((c) => c.statut === "termine").length },
+  ];
+
+  // ━━━ Alertes IA : tickets P1 urgents + chantiers en retard ━━━
+  const alertes = [
+    ...(ticketsUrgents ?? []).map(
+      (t) => `Ticket ${t.numero_ticket} — ${t.sujet} (intervention sous 4h)`,
+    ),
+    ...chantiers
+      .filter((c) => c.statut === "en_retard")
+      .map((c) => `Chantier de ${c.nom_client} en retard (fin prévue le ${formatDate(c.date_fin_prevue)})`),
+  ];
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
-      {ticketsUrgents && ticketsUrgents.length > 0 && (
-        <div className="mb-6 rounded-lg bg-red-600 px-4 py-3 text-sm font-medium text-white">
-          URGENT — Intervention requise sous 4h ({ticketsUrgents.length} ticket
-          {ticketsUrgents.length > 1 ? "s" : ""} P1 en attente)
-        </div>
-      )}
-
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Chantiers</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Vue d&apos;ensemble de l&apos;activité de votre entreprise.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <VerifierRelancesButton />
-          <NewChantierModal />
-        </div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-slate-900">Tableau de bord</h1>
+        <p className="mt-1 text-sm text-slate-500">
+          Vue d&apos;ensemble de l&apos;activité de votre entreprise.
+        </p>
       </div>
 
-      <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs font-medium text-slate-500">Total</p>
-          <p className="mt-1 text-2xl font-semibold text-slate-900">{total}</p>
-        </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs font-medium text-slate-500">En cours</p>
-          <p className="mt-1 text-2xl font-semibold text-orange-600">
-            {enCours}
-          </p>
-        </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs font-medium text-slate-500">En retard</p>
-          <p className="mt-1 text-2xl font-semibold text-red-600">
-            {enRetard}
-          </p>
-        </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs font-medium text-slate-500">Terminés</p>
-          <p className="mt-1 text-2xl font-semibold text-green-600">
-            {termines}
-          </p>
-        </div>
+      <div className="mb-8 grid grid-cols-2 gap-4">
+        <StatCard label="Chantiers ouverts" value={chantiersOuverts} dot="blue" />
+        <StatCard label="En retard" value={enRetard} dot="red" />
+        <StatCard
+          label="Livrés ce mois"
+          value={livresCeMois}
+          subtext="Clôturés ce mois-ci"
+          dot="green"
+        />
+        <StatCard
+          label="Réceptions prêtes"
+          value={receptionsPretes}
+          subtext="Progression à 100 %, en attente de clôture"
+          dot="orange"
+        />
       </div>
 
-      {chantiers.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center">
-          <p className="text-sm text-slate-500">
-            Aucun chantier pour le moment. Créez votre premier chantier pour
-            commencer.
-          </p>
-        </div>
-      ) : (
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Client
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Statut
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Progression
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Fin prévue
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {chantiers.map((chantier) => (
-                <tr key={chantier.id} className="hover:bg-slate-50">
-                  <td className="px-6 py-4">
-                    <div className="relative inline-block">
-                      {(nombreMessagesParChantier.get(chantier.id) ?? 0) > 0 && (
-                        <span
-                          className="absolute -left-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-slate-300 px-1 text-[10px] font-medium leading-none text-slate-700"
-                          title={`${nombreMessagesParChantier.get(chantier.id)} message${
-                            (nombreMessagesParChantier.get(chantier.id) ?? 0) > 1 ? "s" : ""
-                          }`}
-                        >
-                          {nombreMessagesParChantier.get(chantier.id)}
-                        </span>
-                      )}
-                      <Link
-                        href={`/dashboard/chantiers/${chantier.id}`}
-                        className="text-sm font-medium text-slate-900 hover:underline"
-                      >
-                        {chantier.nom_client}
-                      </Link>
-                      <p className="text-xs text-slate-500">{chantier.adresse}</p>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <StatutBadge statut={chantier.statut} />
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-24">
-                        <ProgressBar progression={chantier.progression} size="sm" />
-                      </div>
-                      <span className="text-xs text-slate-500">
-                        {chantier.progression}%
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-700">
-                    {formatDate(chantier.date_fin_prevue)}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <CopyLinkButton
-                        link={`${origin}/chantier/${chantier.lien_token}`}
-                      />
-                      <Link
-                        href={`/dashboard/chantiers/${chantier.id}`}
-                        className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
-                      >
-                        Gérer
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <div className="mb-8 rounded-lg border border-slate-200 bg-white p-5">
+        <h2 className="mb-4 text-sm font-semibold text-slate-900">
+          Répartition par statut
+        </h2>
+        <StatutBreakdown items={repartition} />
+      </div>
+
+      <AlertesIABanner items={alertes} />
     </div>
   );
 }

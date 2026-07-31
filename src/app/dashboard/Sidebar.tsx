@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation";
 import styles from "./dashboard.module.css";
 
 const LINKS = [
-  { href: "/dashboard", label: "Chantiers" },
+  { href: "/dashboard", label: "Tableau de bord" },
+  { href: "/dashboard/chantiers", label: "Chantiers" },
+  { href: "/dashboard/clients", label: "Clients" },
   { href: "/dashboard/rapports", label: "Rapports" },
   { href: "/dashboard/profil", label: "Profil" },
 ];

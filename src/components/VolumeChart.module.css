@@ -1,0 +1,37 @@
+.chartTrack {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  height: 140px;
+}
+
+.barColumn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.barFill {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  height: var(--target-height, 0%);
+  animation: growBarHeight 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes growBarHeight {
+  from {
+    height: 0%;
+  }
+  to {
+    height: var(--target-height, 0%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barFill {
+    animation: none;
+  }
+}
