@@ -4,62 +4,15 @@
   position: relative;
 }
 
-/* Couche de fond fixe, sous tout le reste (sidebar, header, contenu) —
-   photo de chantier très atténuée + le même voile or que la landing page,
-   mais nettement plus opaque ici : l'ambiance doit rester secondaire par
-   rapport à la lecture des données. #fdfaf2 sert de couleur de secours
-   pendant le chargement de l'image et si jamais elle ne charge pas. */
+/* Couche de fond fixe, sous tout le reste (sidebar, header, contenu) — le
+   dégradé or animé lui-même est appliqué via goldBackgroundAnimated
+   (composé dans DashboardBackground.tsx), cette classe ne fournit que le
+   positionnement (fixed, plein écran, sous le contenu). */
 .bgLayer {
   position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: #fdfaf2;
-}
-
-/* Légèrement surdimensionnée pour que le lent va-et-vient ne révèle jamais
-   de bord vide, et desaturée/éclaircie pour rester discrète derrière le
-   voile or. Le mouvement anime uniquement "transform" (composité par le
-   GPU, sans recalcul de mise en page ni de peinture) — même logique que la
-   parallaxe du hublot du hero. */
-.bgImage {
-  position: absolute;
-  top: -6%;
-  left: -8%;
-  width: 116%;
-  height: 112%;
-  object-fit: cover;
-  filter: saturate(0.5) brightness(1.12) contrast(0.9);
-  opacity: 0.5;
-  animation: dashboardBgDrift 90s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bgImage {
-    animation: none;
-  }
-}
-
-@keyframes dashboardBgDrift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1.04);
-  }
-  100% {
-    transform: translate3d(-2.5%, 1.2%, 0) scale(1.04);
-  }
-}
-
-.bgOverlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(120deg, rgba(255, 244, 214, 0.55) 0%, transparent 22%),
-    linear-gradient(-40deg, rgba(120, 84, 20, 0.14) 4%, transparent 32%),
-    linear-gradient(105deg, transparent 40%, rgba(255, 240, 200, 0.4) 52%, transparent 66%),
-    radial-gradient(ellipse 900px 700px at 80% 75%, rgba(120, 84, 20, 0.08), transparent 60%),
-    radial-gradient(ellipse 800px 600px at 8% 10%, rgba(255, 246, 220, 0.55), transparent 60%),
-    rgba(253, 250, 242, 0.72);
 }
 
 /* Bulles verre dépoli de la nav latérale — même recette que .pill sur la
@@ -75,8 +28,14 @@
   box-shadow: 0 1px 2px rgba(34, 31, 26, 0.06);
   transition: background 0.2s ease, border-color 0.2s ease;
 }
+/* Fond blanc bien plus opaque que .navPill (35%) : sur le dégradé or animé
+   (contrairement à l'ancien fond photo très pâle), un simple voile bleu à
+   14% ne laisse plus assez de contraste au texte bleu de l'état actif —
+   vérifié en WCAG à chaque étape du dégradé (pire cas #b8893a : 5.76:1
+   avec le texte bleu-700 ci-dessous, au lieu de 1.47:1 avec l'ancien
+   traitement). */
 .navPillActive {
-  background: rgba(37, 99, 235, 0.14);
+  background: rgba(255, 255, 255, 0.85);
   border-color: rgba(37, 99, 235, 0.35);
 }
 

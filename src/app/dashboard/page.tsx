@@ -6,6 +6,7 @@ import type { Chantier } from "@/lib/types";
 import { StatCard } from "@/components/StatCard";
 import { StatutBreakdown } from "@/components/StatutBreakdown";
 import { AlertesIABanner } from "@/components/AlertesIABanner";
+import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const metadata: Metadata = {
@@ -75,7 +76,7 @@ export default async function DashboardPage() {
   if (!entreprise) {
     return (
       <div className="p-6">
-        <p className="text-sm text-slate-500">
+        <p className={`text-sm ${GOLD_BG_TEXT_CLASS}`}>
           Impossible de charger les informations de votre entreprise.
         </p>
       </div>
@@ -137,7 +138,7 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-6xl px-6 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-slate-900">Tableau de bord</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className={`mt-1 text-sm ${GOLD_BG_TEXT_CLASS}`}>
           Vue d&apos;ensemble de l&apos;activité de votre entreprise.
         </p>
       </div>

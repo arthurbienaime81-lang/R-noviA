@@ -4,6 +4,7 @@ import type { Entreprise } from "@/lib/types";
 import { ProfilForm } from "./ProfilForm";
 import { LogoUpload } from "./LogoUpload";
 import { PasswordForm } from "./PasswordForm";
+import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Paramètres | RenovIA",
@@ -29,7 +30,7 @@ export default async function ProfilPage() {
     <div className="mx-auto max-w-2xl space-y-6 px-6 py-8">
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">Paramètres</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className={`mt-1 text-sm ${GOLD_BG_TEXT_CLASS}`}>
           Gérez votre compte et les informations de votre entreprise.
         </p>
       </div>

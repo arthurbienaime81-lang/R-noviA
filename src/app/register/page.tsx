@@ -16,7 +16,7 @@ export default function RegisterPage() {
   return (
     <main
       data-gold-bg
-      className={`flex min-h-dvh items-center justify-center px-6 ${goldBg.goldBackground}`}
+      className={`flex min-h-dvh items-center justify-center px-6 ${goldBg.goldBackgroundAnimated}`}
     >
       <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
         <div className="mb-6 text-center">

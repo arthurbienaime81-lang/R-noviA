@@ -20,6 +20,7 @@ import { EtapesList } from "./EtapesList";
 import { PhotoUpload } from "./PhotoUpload";
 import { ReclamationsList, type ReclamationAvecDetails } from "./ReclamationsList";
 import { Messagerie } from "./Messagerie";
+import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Détail du chantier | RenovIA",
@@ -109,7 +110,7 @@ export default async function ChantierDetailPage({
           <h1 className="text-2xl font-semibold text-slate-900">
             {chantier.nom_client}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">{chantier.adresse}</p>
+          <p className={`mt-1 text-sm ${GOLD_BG_TEXT_CLASS}`}>{chantier.adresse}</p>
           <div className="mt-2 flex items-center gap-2">
             <StatutBadge statut={chantier.statut} />
           </div>

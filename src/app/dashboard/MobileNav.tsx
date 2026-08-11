@@ -83,7 +83,7 @@ export function MobileNav() {
                     href={link.href}
                     onClick={() => setOpen(false)}
                     className={`${styles.navPill} ${active ? styles.navPillActive : ""} px-3 py-2 text-sm font-medium transition-colors ${
-                      active ? "text-[#2563EB]" : "text-slate-700 hover:text-slate-900"
+                      active ? "text-[#1d4ed8]" : "text-slate-700 hover:text-slate-900"
                     }`}
                   >
                     {link.label}

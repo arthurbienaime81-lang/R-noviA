@@ -14,3 +14,41 @@
     radial-gradient(ellipse 800px 600px at 8% 10%, rgba(255, 246, 220, 0.7), transparent 60%),
     var(--bg);
 }
+
+/* Fond or animé (dégradé qui glisse en boucle) — utilisé sur /login,
+   /register et les pages du dashboard, pour une identité "or" cohérente et
+   vivante sur toute l'app. Distinct de .goldBackground ci-dessus (hero/
+   landing, dégradé statique avec bandes métalliques) : ne jamais fusionner
+   les deux, sous peine de changer aussi le fond du hero par effet de bord. */
+.goldBackgroundAnimated {
+  background: linear-gradient(
+    120deg,
+    #c99e4a 0%,
+    #e6c876 20%,
+    #d4a94a 40%,
+    #b8893a 60%,
+    #e6c876 80%,
+    #c99e4a 100%
+  );
+  background-size: 250% 250%;
+  animation: goldBackgroundShift 6s ease-in-out infinite;
+}
+
+@keyframes goldBackgroundShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goldBackgroundAnimated {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import type { Chantier } from "@/lib/types";
 import { RapportsClient } from "./RapportsClient";
+import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Rapports | RenovIA",
@@ -24,7 +25,7 @@ export default async function RapportsPage() {
   if (!entreprise) {
     return (
       <div className="p-6">
-        <p className="text-sm text-slate-500">
+        <p className={`text-sm ${GOLD_BG_TEXT_CLASS}`}>
           Impossible de charger les informations de votre entreprise.
         </p>
       </div>
@@ -41,7 +42,7 @@ export default async function RapportsPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">
       <h1 className="text-2xl font-semibold text-slate-900">Rapports</h1>
-      <p className="mt-1 text-sm text-slate-500">
+      <p className={`mt-1 text-sm ${GOLD_BG_TEXT_CLASS}`}>
         Statistiques d&apos;activité de votre entreprise.
       </p>
       <RapportsClient chantiers={chantiers} />

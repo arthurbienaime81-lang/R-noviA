@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import type { Chantier } from "@/lib/types";
 import { ClientsList } from "./ClientsList";
+import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Clients | RenovIA",
@@ -32,7 +33,7 @@ export default async function ClientsPage() {
   if (!entreprise) {
     return (
       <div className="p-6">
-        <p className="text-sm text-slate-500">
+        <p className={`text-sm ${GOLD_BG_TEXT_CLASS}`}>
           Impossible de charger les informations de votre entreprise.
         </p>
       </div>
@@ -75,7 +76,7 @@ export default async function ClientsPage() {
     <div className="mx-auto max-w-4xl px-6 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-slate-900">Clients</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className={`mt-1 text-sm ${GOLD_BG_TEXT_CLASS}`}>
           {clients.length} client{clients.length > 1 ? "s" : ""} au total.
         </p>
       </div>

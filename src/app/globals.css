@@ -21,12 +21,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Pages à fond or plein écran (landing, /login, /register) : leur élément
-   racine porte l'attribut data-gold-bg. Sur mobile, le rebond élastique
-   d'iOS Safari en haut/bas de page découvre brièvement le fond du <body> —
-   sans cette règle, ce fond reste blanc par défaut et casse la continuité
-   visuelle du dégradé or. Ciblé via :has() pour ne s'appliquer qu'à ces
-   pages précises, sans toucher au fond des autres (dashboard...). */
+/* Pages à fond or plein écran (landing, /login, /register, /dashboard/*) :
+   leur élément racine porte l'attribut data-gold-bg. Sur mobile, le rebond
+   élastique d'iOS Safari en haut/bas de page découvre brièvement le fond
+   du <body> — sans cette règle, ce fond reste blanc par défaut et casse la
+   continuité visuelle du dégradé or. Ciblé via :has() pour ne s'appliquer
+   qu'à ces pages précises. */
 body:has(> [data-gold-bg]) {
   background: var(--gold-bg);
 }

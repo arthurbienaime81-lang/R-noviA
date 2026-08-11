@@ -5,6 +5,7 @@ import type { Chantier } from "@/lib/types";
 import { VerifierRelancesButton } from "@/components/VerifierRelancesButton";
 import { NewChantierModal } from "../NewChantierModal";
 import { ChantiersList } from "./ChantiersList";
+import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Chantiers | RenovIA",
@@ -27,7 +28,7 @@ export default async function ChantiersPage() {
   if (!entreprise) {
     return (
       <div className="p-6">
-        <p className="text-sm text-slate-500">
+        <p className={`text-sm ${GOLD_BG_TEXT_CLASS}`}>
           Impossible de charger les informations de votre entreprise.
         </p>
       </div>
@@ -59,7 +60,7 @@ export default async function ChantiersPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900">Chantiers</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className={`mt-1 text-sm ${GOLD_BG_TEXT_CLASS}`}>
             Tous vos chantiers, en un coup d&apos;œil.
           </p>
         </div>

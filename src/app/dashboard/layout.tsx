@@ -1,3 +1,4 @@
+import type { Viewport } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { IntroScreen } from "@/components/intro/IntroScreen";
@@ -6,6 +7,12 @@ import { Header } from "./Header";
 import { DashboardBackground } from "./DashboardBackground";
 import { PageTransition } from "./PageTransition";
 import styles from "./dashboard.module.css";
+
+// Même couleur de base que le fond or animé (goldBackground.module.css) —
+// voir la note dans src/app/page.tsx.
+export const viewport: Viewport = {
+  themeColor: "#d4a94a",
+};
 
 export default async function DashboardLayout({
   children,
@@ -28,7 +35,7 @@ export default async function DashboardLayout({
     .single();
 
   return (
-    <div className={`flex min-h-screen ${styles.dashboardBg}`}>
+    <div data-gold-bg className={`flex min-h-screen ${styles.dashboardBg}`}>
       <DashboardBackground />
       <IntroScreen storageKey="renovia-show-login-intro" trigger="flag" />
       <Sidebar />
