@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { uploadLogo, type ProfilActionState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { DARK_GOLD_BUTTON_CLASSES } from "@/lib/styles";
 
 const initialState: ProfilActionState = { error: null, success: false };
 
@@ -57,7 +58,9 @@ export function LogoUpload({ logoUrl }: { logoUrl: string | null }) {
         />
       </div>
 
-      <SubmitButton pendingLabel="Envoi...">Mettre à jour le logo</SubmitButton>
+      <SubmitButton className={DARK_GOLD_BUTTON_CLASSES} pendingLabel="Envoi...">
+        Mettre à jour le logo
+      </SubmitButton>
     </form>
   );
 }

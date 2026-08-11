@@ -3,6 +3,7 @@
 import { useFormState } from "react-dom";
 import { updateProfil, type ProfilActionState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { DARK_GOLD_BUTTON_CLASSES } from "@/lib/styles";
 import type { Entreprise } from "@/lib/types";
 
 const initialState: ProfilActionState = { error: null, success: false };
@@ -76,7 +77,9 @@ export function ProfilForm({ entreprise }: { entreprise: Entreprise }) {
         </p>
       </div>
 
-      <SubmitButton pendingLabel="Enregistrement...">Enregistrer</SubmitButton>
+      <SubmitButton className={DARK_GOLD_BUTTON_CLASSES} pendingLabel="Enregistrement...">
+        Enregistrer
+      </SubmitButton>
     </form>
   );
 }

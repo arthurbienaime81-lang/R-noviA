@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { createChantier, type NewChantierState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { DARK_GOLD_BUTTON_CLASSES } from "@/lib/styles";
 
 const initialState: NewChantierState = { error: null, success: false };
 
@@ -24,7 +25,7 @@ export function NewChantierModal() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center rounded-md bg-[#2563EB] px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+        className={`inline-flex items-center rounded-md px-4 py-2.5 text-sm font-medium ${DARK_GOLD_BUTTON_CLASSES}`}
       >
         Nouveau chantier
       </button>

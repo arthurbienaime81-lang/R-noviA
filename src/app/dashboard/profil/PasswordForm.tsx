@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { changePassword, type PasswordActionState } from "./actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { DARK_GOLD_BUTTON_CLASSES } from "@/lib/styles";
 
 const initialState: PasswordActionState = { error: null, success: false };
 
@@ -69,10 +70,7 @@ export function PasswordForm() {
         />
       </div>
 
-      <SubmitButton
-        className="!bg-[#23261c] !text-[#d4a94a] hover:!bg-[#3a3d2e]"
-        pendingLabel="Mise à jour..."
-      >
+      <SubmitButton className={DARK_GOLD_BUTTON_CLASSES} pendingLabel="Mise à jour...">
         Enregistrer
       </SubmitButton>
     </form>
