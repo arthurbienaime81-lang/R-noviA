@@ -77,7 +77,10 @@ export function RegisterForm() {
         />
       </div>
 
-      <SubmitButton className="w-full" pendingLabel="Création du compte...">
+      <SubmitButton
+        className="w-full !bg-[#23261c] !text-[#d4a94a] hover:!bg-[#3a3d2e]"
+        pendingLabel="Création du compte..."
+      >
         Créer mon compte
       </SubmitButton>
 

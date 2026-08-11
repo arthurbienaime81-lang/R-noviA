@@ -1,13 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { RegisterForm } from "./RegisterForm";
+import goldBg from "@/styles/goldBackground.module.css";
 
 export const metadata: Metadata = {
   title: "Créer un compte | RenovIA",
 };
 
+// Même couleur de base que le fond or du hero (goldBackground.module.css) —
+// voir la note dans src/app/page.tsx.
+export const viewport: Viewport = {
+  themeColor: "#d4a94a",
+};
+
 export default function RegisterPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#F8FAFC] px-6 py-10">
+    <main
+      data-gold-bg
+      className={`flex min-h-dvh items-center justify-center px-6 ${goldBg.goldBackground}`}
+    >
       <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
         <div className="mb-6 text-center">
           <p className="text-lg font-semibold text-slate-900">RenovIA</p>
