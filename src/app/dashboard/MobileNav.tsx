@@ -11,7 +11,7 @@ const LINKS = [
   { href: "/dashboard/chantiers", label: "Chantiers" },
   { href: "/dashboard/clients", label: "Clients" },
   { href: "/dashboard/rapports", label: "Rapports" },
-  { href: "/dashboard/profil", label: "Profil" },
+  { href: "/dashboard/profil", label: "Paramètres" },
 ];
 
 export function MobileNav() {

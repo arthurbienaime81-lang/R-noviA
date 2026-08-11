@@ -69,8 +69,11 @@ export function PasswordForm() {
         />
       </div>
 
-      <SubmitButton pendingLabel="Mise à jour...">
-        Changer le mot de passe
+      <SubmitButton
+        className="!bg-[#23261c] !text-[#d4a94a] hover:!bg-[#3a3d2e]"
+        pendingLabel="Mise à jour..."
+      >
+        Enregistrer
       </SubmitButton>
     </form>
   );
