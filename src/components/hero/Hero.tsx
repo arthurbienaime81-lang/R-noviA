@@ -19,7 +19,7 @@ export function Hero() {
       <nav className={styles.nav}>
         <motion.div variants={slideUp}>
           <Link href="/" className={`${styles.logo} ${styles.pill}`}>
-            Réno<span className={styles.logoAccent}>via</span>
+            Chanti<span className={styles.logoAccent}>via</span>
           </Link>
         </motion.div>
         <div className={styles.navRight}>
@@ -40,7 +40,7 @@ export function Hero() {
             className={`${styles.navcontact} ${styles.pill}`}
             variants={slideUp}
           >
-            contact@renovia.fr
+            contact@chantivia.fr
           </motion.div>
         </div>
       </nav>
@@ -59,7 +59,7 @@ export function Hero() {
           <div className={styles.divider} />
           <div className={styles.ctaRow}>
             <Link href="/register" className={styles.cta}>
-              Essayer RenovIA
+              Essayer Chantivia
               <span className={styles.ctaIcon}>→</span>
             </Link>
           </div>

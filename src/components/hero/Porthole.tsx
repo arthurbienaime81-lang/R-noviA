@@ -74,7 +74,7 @@ export function Porthole() {
           <motion.div className={styles.bulbCord} style={front} />
           <motion.div className={styles.bulbGlow} style={front} />
           <motion.div className={styles.bulb} style={front} />
-          <div className={styles.wordmark}>Rénovia</div>
+          <div className={styles.wordmark}>Chantivia</div>
         </div>
       </div>
     </motion.div>

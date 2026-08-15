@@ -128,7 +128,7 @@ export function IntroScreen({ storageKey, trigger }: Props) {
                   animate={{ rotate: shouldReduceMotion ? 0 : 360 }}
                   transition={{ duration: shouldReduceMotion ? 0 : 1, ease: "easeInOut" }}
                 >
-                  RenovIA
+                  Chantivia
                 </motion.p>
                 <svg
                   width="26"

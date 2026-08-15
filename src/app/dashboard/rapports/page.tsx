@@ -5,7 +5,7 @@ import { RapportsClient } from "./RapportsClient";
 import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
-  title: "Rapports | RenovIA",
+  title: "Rapports | Chantivia",
 };
 
 export default async function RapportsPage() {

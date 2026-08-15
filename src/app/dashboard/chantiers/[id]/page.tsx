@@ -23,7 +23,7 @@ import { Messagerie } from "./Messagerie";
 import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
-  title: "Détail du chantier | RenovIA",
+  title: "Détail du chantier | Chantivia",
 };
 
 export default async function ChantierDetailPage({

@@ -10,7 +10,7 @@ import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const metadata: Metadata = {
-  title: "Tableau de bord | RenovIA",
+  title: "Tableau de bord | Chantivia",
 };
 
 async function flagChantiersEnRetard(

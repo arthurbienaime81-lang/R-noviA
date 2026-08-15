@@ -1,6 +1,6 @@
-# Installation de RenovIA
+# Installation de Chantivia
 
-RenovIA est un SaaS de gestion de chantiers pour les entreprises de
+Chantivia est un SaaS de gestion de chantiers pour les entreprises de
 rénovation TCE, construit avec Next.js 14 (App Router), Supabase
 (authentification, base de données, stockage) et Resend (emails
 transactionnels).
@@ -52,7 +52,7 @@ exécution) :
 3. Par défaut, les emails partent depuis `onboarding@resend.dev` (adresse de
    test Resend, aucune configuration requise). Pour utiliser votre propre
    domaine, vérifiez-le dans Resend puis renseignez `EMAIL_FROM` dans
-   `.env.local` (ex. `RenovIA <contact@votredomaine.fr>`).
+   `.env.local` (ex. `Chantivia <contact@votredomaine.fr>`).
 
 ## 5. Lancer l'application
 
@@ -115,6 +115,6 @@ autre entreprise.
 
 ## Ce que le client ne voit jamais
 
-Le mot « RenovIA » n'apparaît ni sur `/chantier/[token]` et `/avis/[token]`,
+Le mot « Chantivia » n'apparaît ni sur `/chantier/[token]` et `/avis/[token]`,
 ni dans aucun email envoyé au client : le nom affiché (page et expéditeur
 d'email) est toujours celui de l'entreprise TCE.

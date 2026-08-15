@@ -3,7 +3,7 @@ import { RegisterForm } from "./RegisterForm";
 import goldBg from "@/styles/goldBackground.module.css";
 
 export const metadata: Metadata = {
-  title: "Créer un compte | RenovIA",
+  title: "Créer un compte | Chantivia",
 };
 
 // Même couleur de base que le fond or du hero (goldBackground.module.css) —
@@ -20,7 +20,7 @@ export default function RegisterPage() {
     >
       <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
         <div className="mb-6 text-center">
-          <p className="text-lg font-semibold text-slate-900">RenovIA</p>
+          <p className="text-lg font-semibold text-slate-900">Chantivia</p>
           <h1 className="mt-2 text-xl font-semibold text-slate-900">
             Créer un compte
           </h1>

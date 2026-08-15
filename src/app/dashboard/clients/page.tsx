@@ -5,7 +5,7 @@ import { ClientsList } from "./ClientsList";
 import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
-  title: "Clients | RenovIA",
+  title: "Clients | Chantivia",
 };
 
 export type ClientAgregat = {

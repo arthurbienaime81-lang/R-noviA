@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-const DEFAULT_FROM = process.env.EMAIL_FROM ?? "RenovIA <onboarding@resend.dev>";
+const DEFAULT_FROM = process.env.EMAIL_FROM ?? "Chantivia <onboarding@resend.dev>";
 const FROM_ADDRESS = DEFAULT_FROM.match(/<(.+)>/)?.[1] ?? DEFAULT_FROM;
 
 function getResend() {
@@ -9,7 +9,7 @@ function getResend() {
 
 /**
  * Identité d'expédition utilisée pour tout email vu par le client final : le
- * nom affiché est celui de l'entreprise TCE, jamais « RenovIA ».
+ * nom affiché est celui de l'entreprise TCE, jamais « Chantivia ».
  */
 function clientFrom(nomEntreprise: string) {
   return `${nomEntreprise} <${FROM_ADDRESS}>`;

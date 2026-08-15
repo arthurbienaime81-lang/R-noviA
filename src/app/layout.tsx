@@ -22,9 +22,9 @@ const geistMono = localFont({
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "RenovIA — Gestion de chantiers TCE",
+  title: "Chantivia — Gestion de chantiers TCE",
   description:
-    "RenovIA, l'outil de gestion de chantiers pour les entreprises de rénovation tous corps d'état.",
+    "Chantivia, l'outil de gestion de chantiers pour les entreprises de rénovation tous corps d'état.",
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ import { PasswordForm } from "./PasswordForm";
 import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
-  title: "Paramètres | RenovIA",
+  title: "Paramètres | Chantivia",
 };
 
 export default async function ProfilPage() {

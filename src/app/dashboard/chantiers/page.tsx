@@ -8,7 +8,7 @@ import { ChantiersList } from "./ChantiersList";
 import { GOLD_BG_TEXT_CLASS } from "@/lib/styles";
 
 export const metadata: Metadata = {
-  title: "Chantiers | RenovIA",
+  title: "Chantiers | Chantivia",
 };
 
 export default async function ChantiersPage() {

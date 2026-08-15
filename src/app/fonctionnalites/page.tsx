@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { spaceGrotesk, inter, ibmPlexMono } from "@/lib/fonts";
 
 export const metadata: Metadata = {
-  title: "Fonctionnalités | RenovIA",
+  title: "Fonctionnalités | Chantivia",
   description:
-    "Comment RenovIA automatise le suivi de chantier et le service après-vente des entreprises de rénovation TCE : SOP en 7 étapes et fonctionnalités automatisées.",
+    "Comment Chantivia automatise le suivi de chantier et le service après-vente des entreprises de rénovation TCE : SOP en 7 étapes et fonctionnalités automatisées.",
 };
 
 const ETAPES_SOP = [
@@ -14,14 +14,14 @@ const ETAPES_SOP = [
     titre: "Réception de la demande",
     delai: "Immédiat",
     description:
-      "Votre client vous contacte par le canal de son choix — formulaire de suivi, WhatsApp, email ou téléphone. RenovIA capture la demande et crée un ticket unique et horodaté, relié automatiquement au bon chantier. Aucune demande ne se perd plus entre plusieurs canaux.",
+      "Votre client vous contacte par le canal de son choix — formulaire de suivi, WhatsApp, email ou téléphone. Chantivia capture la demande et crée un ticket unique et horodaté, relié automatiquement au bon chantier. Aucune demande ne se perd plus entre plusieurs canaux.",
   },
   {
     numero: "02",
     titre: "Accusé de réception automatique",
     delai: "< 5 minutes",
     description:
-      "Le client reçoit immédiatement un message avec son numéro de ticket et le délai de réponse engagé (moins de 2h en heures ouvrées). Hors horaires d'ouverture, un message adapté annonce une reprise dès 9h le jour ouvré suivant. L'email est signé du nom de votre entreprise — jamais de « RenovIA » visible côté client.",
+      "Le client reçoit immédiatement un message avec son numéro de ticket et le délai de réponse engagé (moins de 2h en heures ouvrées). Hors horaires d'ouverture, un message adapté annonce une reprise dès 9h le jour ouvré suivant. L'email est signé du nom de votre entreprise — jamais de « Chantivia » visible côté client.",
   },
   {
     numero: "03",
@@ -42,7 +42,7 @@ const ETAPES_SOP = [
     titre: "Suivi actif et relances",
     delai: "Continu",
     description:
-      "RenovIA surveille chaque ticket ouvert et relance automatiquement en 3 paliers si aucune mise à jour n'est enregistrée : 24h, 48h, puis 72h sans réponse. Le client voit un journal d'activité daté sur sa page de suivi — il n'a jamais à relancer lui-même.",
+      "Chantivia surveille chaque ticket ouvert et relance automatiquement en 3 paliers si aucune mise à jour n'est enregistrée : 24h, 48h, puis 72h sans réponse. Le client voit un journal d'activité daté sur sa page de suivi — il n'a jamais à relancer lui-même.",
   },
   {
     numero: "06",
@@ -69,7 +69,7 @@ const FONCTIONNALITES = [
   {
     titre: "Emails automatiques à chaque étape clé",
     description:
-      "Bienvenue à la création du chantier, accusé de réception, prise en charge, clôture, relances, demande d'avis — tous signés du nom de votre entreprise, jamais de « RenovIA » visible du client.",
+      "Bienvenue à la création du chantier, accusé de réception, prise en charge, clôture, relances, demande d'avis — tous signés du nom de votre entreprise, jamais de « Chantivia » visible du client.",
   },
   {
     titre: "QR code de suivi",
@@ -89,7 +89,7 @@ const FONCTIONNALITES = [
   {
     titre: "Relances automatiques à 3 niveaux",
     description:
-      "24h, 48h puis 72h sans mise à jour : RenovIA relance seul, sans que vous ayez à surveiller chaque ticket manuellement.",
+      "24h, 48h puis 72h sans mise à jour : Chantivia relance seul, sans que vous ayez à surveiller chaque ticket manuellement.",
   },
   {
     titre: "Clôture avec preuve photo",
@@ -123,13 +123,13 @@ export default function FonctionnalitesPage() {
           href="/"
           className="font-[family-name:var(--font-space-grotesk)] text-xl font-bold"
         >
-          Réno<span className="text-[#886820]">via</span>
+          Chanti<span className="text-[#886820]">via</span>
         </Link>
         <Link
           href="/register"
           className="rounded-full bg-[#23261c] px-6 py-2.5 text-sm font-semibold text-[#d4a94a] transition hover:bg-[#4a5a63]"
         >
-          Essayer RenovIA
+          Essayer Chantivia
         </Link>
       </header>
 
@@ -143,7 +143,7 @@ export default function FonctionnalitesPage() {
           <span className="text-[#886820]">sans rien faire manuellement.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#5c4a1e]">
-          RenovIA centralise le suivi d&apos;avancement, les réclamations et les
+          Chantivia centralise le suivi d&apos;avancement, les réclamations et les
           avis clients des entreprises TCE. Chaque demande reçoit un accusé de
           réception en moins de 5 minutes, chaque ticket est relancé
           automatiquement, chaque clôture est documentée — sans que vous ayez
@@ -200,7 +200,7 @@ export default function FonctionnalitesPage() {
         </h2>
         <p className="mt-4 max-w-xl text-[#5c4a1e]">
           7 étapes, du premier message du client jusqu&apos;à l&apos;avis
-          Google — chacune automatisée ou assistée par RenovIA.
+          Google — chacune automatisée ou assistée par Chantivia.
         </p>
 
         <ol className="mt-12 space-y-10">
@@ -267,7 +267,7 @@ export default function FonctionnalitesPage() {
           href="/register"
           className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#23261c] px-8 py-3.5 text-sm font-semibold text-[#d4a94a] transition hover:bg-[#4a5a63]"
         >
-          Essayer RenovIA
+          Essayer Chantivia
           <span>→</span>
         </Link>
       </section>
