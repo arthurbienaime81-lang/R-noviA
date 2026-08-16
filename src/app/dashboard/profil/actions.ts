@@ -116,9 +116,9 @@ export async function changePassword(
   if (!currentPassword || !newPassword) {
     return { error: "Merci de renseigner tous les champs.", success: false };
   }
-  if (newPassword.length < 6) {
+  if (newPassword.length < 8) {
     return {
-      error: "Le nouveau mot de passe doit contenir au moins 6 caractères.",
+      error: "Le nouveau mot de passe doit contenir au moins 8 caractères.",
       success: false,
     };
   }

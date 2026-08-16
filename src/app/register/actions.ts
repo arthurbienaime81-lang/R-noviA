@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { isAuthWeakPasswordError } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -21,9 +22,9 @@ export async function register(
       info: null,
     };
   }
-  if (password.length < 6) {
+  if (password.length < 8) {
     return {
-      error: "Le mot de passe doit contenir au moins 6 caractères.",
+      error: "Le mot de passe doit contenir au moins 8 caractères.",
       info: null,
     };
   }
@@ -38,6 +39,18 @@ export async function register(
     // utilisé" est suffisamment sûr et utile pour être affiché explicitement.
     if (error) {
       console.error("[register] supabase.auth.signUp error:", error.status, error.message);
+    }
+    // Le minimum de longueur imposé par le dashboard Supabase peut être plus
+    // strict que la vérification ci-dessus (ex. relevé sans mettre à jour le
+    // code) — dans ce cas Supabase rejette avec AuthWeakPasswordError plutôt
+    // qu'un message générique, qu'on traduit ici en message clair.
+    if (error && isAuthWeakPasswordError(error)) {
+      return {
+        error: error.reasons.includes("length")
+          ? "Le mot de passe doit contenir au moins 8 caractères."
+          : "Ce mot de passe est trop faible. Merci d'en choisir un autre.",
+        info: null,
+      };
     }
     return {
       error:
