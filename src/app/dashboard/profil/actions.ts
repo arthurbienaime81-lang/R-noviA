@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { validatePhotoFile, extensionFromMimeType } from "@/lib/uploads";
+import { erreurLongueur } from "@/lib/validation";
 
 export type ProfilActionState = { error: string | null; success: boolean };
 
@@ -17,6 +18,15 @@ export async function updateProfil(
 
   if (!nom || !email) {
     return { error: "Le nom et l'email sont obligatoires.", success: false };
+  }
+  for (const [valeur, max, label] of [
+    [nom, 100, "Le nom de la société"],
+    [email, 254, "L'email"],
+    [tel, 20, "Le téléphone"],
+    [google_maps_url, 500, "Le lien Google Maps"],
+  ] as const) {
+    const erreur = erreurLongueur(valeur, max, label);
+    if (erreur) return { error: erreur, success: false };
   }
 
   const supabase = createClient();

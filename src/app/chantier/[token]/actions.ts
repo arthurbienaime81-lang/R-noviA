@@ -16,6 +16,7 @@ import {
   extensionFromMimeType,
 } from "@/lib/uploads";
 import { sousLaLimite } from "@/lib/rateLimit";
+import { erreurLongueur } from "@/lib/validation";
 
 export type PublicActionState = { error: string | null; success: boolean };
 
@@ -51,6 +52,13 @@ export async function submitReclamation(
       error: "Merci de renseigner le sujet et le message.",
       success: false,
     };
+  }
+  for (const [valeur, max, label] of [
+    [sujet, 100, "Le sujet"],
+    [message, 3000, "Le message"],
+  ] as const) {
+    const erreur = erreurLongueur(valeur, max, label);
+    if (erreur) return { error: erreur, success: false };
   }
 
   // Toujours revalider côté serveur : le nombre, le type et la taille des
@@ -291,6 +299,8 @@ export async function sendMessageClient(
   if (!contenu) {
     return { error: "Le message ne peut pas être vide.", success: false };
   }
+  const erreurContenu = erreurLongueur(contenu, 2000, "Le message");
+  if (erreurContenu) return { error: erreurContenu, success: false };
 
   const chantier = await resolveChantier(token);
   if (!chantier) {

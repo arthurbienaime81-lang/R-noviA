@@ -63,6 +63,7 @@ export function NewChantierModal() {
                     name="nom_client"
                     type="text"
                     required
+                    maxLength={100}
                     className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
@@ -74,6 +75,7 @@ export function NewChantierModal() {
                     name="email_client"
                     type="email"
                     required
+                    maxLength={254}
                     className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
@@ -87,6 +89,7 @@ export function NewChantierModal() {
                   <input
                     name="tel_client"
                     type="tel"
+                    maxLength={20}
                     className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
@@ -98,6 +101,7 @@ export function NewChantierModal() {
                     name="adresse"
                     type="text"
                     required
+                    maxLength={200}
                     className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
@@ -110,6 +114,7 @@ export function NewChantierModal() {
                 <textarea
                   name="description"
                   rows={3}
+                  maxLength={2000}
                   className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
@@ -123,6 +128,7 @@ export function NewChantierModal() {
                     name="type_travaux"
                     type="text"
                     placeholder="Ex. Rénovation salle de bain"
+                    maxLength={100}
                     className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>

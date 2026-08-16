@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { isAuthWeakPasswordError } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { erreurLongueur } from "@/lib/validation";
 
 export type RegisterState = { error: string | null; info: string | null };
 
@@ -21,6 +22,14 @@ export async function register(
       error: "Merci de renseigner le nom de la société, l'email et le mot de passe.",
       info: null,
     };
+  }
+  for (const [valeur, max, label] of [
+    [nom, 100, "Le nom de la société"],
+    [email, 254, "L'email"],
+    [tel, 20, "Le téléphone"],
+  ] as const) {
+    const erreur = erreurLongueur(valeur, max, label);
+    if (erreur) return { error: erreur, info: null };
   }
   if (password.length < 8) {
     return {

@@ -2,6 +2,7 @@
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendAvisAlerteInterne } from "@/lib/emails";
+import { erreurLongueur } from "@/lib/validation";
 
 export type AvisActionState = {
   error: string | null;
@@ -20,6 +21,8 @@ export async function submitAvis(
   if (!Number.isInteger(note) || note < 1 || note > 5) {
     return { error: "Merci de choisir une note de 1 à 5 étoiles.", success: false, note: null };
   }
+  const erreurCommentaire = erreurLongueur(commentaire, 1000, "Le commentaire");
+  if (erreurCommentaire) return { error: erreurCommentaire, success: false, note: null };
 
   const admin = createAdminClient();
   const { data: avis } = await admin

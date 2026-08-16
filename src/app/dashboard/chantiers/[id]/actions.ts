@@ -16,6 +16,7 @@ import type {
   Priorite,
 } from "@/lib/types";
 import { validatePhotoFile, extensionFromMimeType } from "@/lib/uploads";
+import { erreurLongueur } from "@/lib/validation";
 
 export type ChantierActionState = { error: string | null; success: boolean };
 
@@ -47,6 +48,8 @@ export async function updateChantier(
   const montantSaisi = String(formData.get("montant") ?? "").trim();
   const montant = montantSaisi ? Number(montantSaisi) : null;
 
+  const erreurTypeTravaux = erreurLongueur(type_travaux, 100, "Le type de travaux");
+  if (erreurTypeTravaux) return { error: erreurTypeTravaux, success: false };
   if (montantSaisi && !Number.isFinite(montant)) {
     return { error: "Le montant doit être un nombre valide.", success: false };
   }
@@ -181,6 +184,8 @@ export async function clorChantier(
       success: false,
     };
   }
+  const erreurDescription = erreurLongueur(description, 2000, "La description de fin de chantier");
+  if (erreurDescription) return { error: erreurDescription, success: false };
   if (!photo || photo.size === 0) {
     return { error: "Une photo finale est obligatoire.", success: false };
   }
@@ -282,6 +287,8 @@ export async function uploadPhoto(
   if (fileError) {
     return { error: fileError, success: false };
   }
+  const erreurCaption = erreurLongueur(caption, 200, "La légende");
+  if (erreurCaption) return { error: erreurCaption, success: false };
 
   const supabase = createClient();
   const ext = extensionFromMimeType(file.type);
@@ -325,6 +332,8 @@ export async function sendMessageEntreprise(
   if (!contenu) {
     return { error: "Le message ne peut pas être vide.", success: false };
   }
+  const erreurContenu = erreurLongueur(contenu, 2000, "Le message");
+  if (erreurContenu) return { error: erreurContenu, success: false };
 
   const supabase = createClient();
   const { error } = await supabase.from("messages").insert({
@@ -378,7 +387,10 @@ export async function updateNoteInterne(
   chantierId: string,
   reclamationId: string,
   noteInterne: string,
-) {
+): Promise<{ error: string | null }> {
+  const erreur = erreurLongueur(noteInterne, 2000, "La note interne");
+  if (erreur) return { error: erreur };
+
   const supabase = createClient();
   await supabase
     .from("reclamations")
@@ -389,6 +401,7 @@ export async function updateNoteInterne(
     .eq("id", reclamationId);
 
   revalidatePath(`/dashboard/chantiers/${chantierId}`);
+  return { error: null };
 }
 
 // ━━━ Étape 04 — Prise en charge ━━━
@@ -460,6 +473,8 @@ export async function clorReclamation(
       success: false,
     };
   }
+  const erreurDescription = erreurLongueur(description, 2000, "La description de l'intervention");
+  if (erreurDescription) return { error: erreurDescription, success: false };
   if (!photo || photo.size === 0) {
     return {
       error: "Une photo « après intervention » est obligatoire.",

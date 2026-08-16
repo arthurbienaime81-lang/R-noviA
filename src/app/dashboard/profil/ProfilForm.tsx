@@ -32,6 +32,7 @@ export function ProfilForm({ entreprise }: { entreprise: Entreprise }) {
           name="nom"
           type="text"
           required
+          maxLength={100}
           defaultValue={entreprise.nom}
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
@@ -43,6 +44,7 @@ export function ProfilForm({ entreprise }: { entreprise: Entreprise }) {
           name="email"
           type="email"
           required
+          maxLength={254}
           defaultValue={entreprise.email}
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
@@ -55,6 +57,7 @@ export function ProfilForm({ entreprise }: { entreprise: Entreprise }) {
         <input
           name="tel"
           type="tel"
+          maxLength={20}
           defaultValue={entreprise.tel ?? ""}
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
@@ -68,6 +71,7 @@ export function ProfilForm({ entreprise }: { entreprise: Entreprise }) {
           name="google_maps_url"
           type="url"
           placeholder="https://maps.app.goo.gl/..."
+          maxLength={500}
           defaultValue={entreprise.google_maps_url ?? ""}
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />

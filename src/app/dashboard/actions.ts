@@ -8,6 +8,7 @@ import { getOrigin } from "@/lib/utils";
 import { sendBienvenueChantier } from "@/lib/emails";
 import { genererQrCodePng } from "@/lib/qrcode";
 import { ETAPES_PAR_DEFAUT } from "@/lib/types";
+import { erreurLongueur } from "@/lib/validation";
 
 export async function signOut() {
   const supabase = createClient();
@@ -39,6 +40,17 @@ export async function createChantier(
         "Merci de renseigner au minimum le nom du client, son email et l'adresse.",
       success: false,
     };
+  }
+  for (const [valeur, max, label] of [
+    [nom_client, 100, "Le nom du client"],
+    [email_client, 254, "L'email du client"],
+    [tel_client, 20, "Le téléphone du client"],
+    [adresse, 200, "L'adresse"],
+    [description, 2000, "La description"],
+    [type_travaux, 100, "Le type de travaux"],
+  ] as const) {
+    const erreur = erreurLongueur(valeur, max, label);
+    if (erreur) return { error: erreur, success: false };
   }
   if (montantSaisi && !Number.isFinite(montant)) {
     return { error: "Le montant doit être un nombre valide.", success: false };

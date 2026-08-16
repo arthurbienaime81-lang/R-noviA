@@ -48,6 +48,7 @@ export function ReclamationCard({
   const [isPending, startTransition] = useTransition();
   const [noteInterne, setNoteInterne] = useState(reclamation.note_interne ?? "");
   const [noteSaved, setNoteSaved] = useState(false);
+  const [noteError, setNoteError] = useState<string | null>(null);
 
   const clotureAction = clorReclamation.bind(null, chantierId, reclamation.id);
   const [clotureState, clotureFormAction] = useFormState(
@@ -64,7 +65,12 @@ export function ReclamationCard({
 
   function handleNoteSave() {
     startTransition(async () => {
-      await updateNoteInterne(chantierId, reclamation.id, noteInterne);
+      const { error } = await updateNoteInterne(chantierId, reclamation.id, noteInterne);
+      if (error) {
+        setNoteError(error);
+        return;
+      }
+      setNoteError(null);
       setNoteSaved(true);
       setTimeout(() => setNoteSaved(false), 2000);
     });
@@ -142,8 +148,10 @@ export function ReclamationCard({
           value={noteInterne}
           onChange={(e) => setNoteInterne(e.target.value)}
           rows={2}
+          maxLength={2000}
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
+        {noteError && <p className="mt-1 text-xs text-red-600">{noteError}</p>}
         <button
           type="button"
           onClick={handleNoteSave}
@@ -196,6 +204,7 @@ export function ReclamationCard({
               name="description_resolution"
               required
               rows={3}
+              maxLength={2000}
               value={descriptionResolution}
               onChange={(e) => setDescriptionResolution(e.target.value)}
               className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
