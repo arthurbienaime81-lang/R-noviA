@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ChantiersPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -72,7 +72,7 @@ export default async function ChantiersPage() {
 
       <ChantiersList
         chantiers={chantiers}
-        origin={getOrigin()}
+        origin={await getOrigin()}
         messageCounts={nombreMessagesParChantier}
       />
     </div>

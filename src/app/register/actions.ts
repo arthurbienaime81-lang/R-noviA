@@ -38,7 +38,7 @@ export async function register(
     };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error || !data.user) {

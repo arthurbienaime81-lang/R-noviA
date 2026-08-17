@@ -11,7 +11,7 @@ import { ETAPES_PAR_DEFAUT } from "@/lib/types";
 import { erreurLongueur } from "@/lib/validation";
 
 export async function signOut() {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/login");
 }
@@ -56,7 +56,7 @@ export async function createChantier(
     return { error: "Le montant doit être un nombre valide.", success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -112,7 +112,7 @@ export async function createChantier(
     };
   }
 
-  const lienSuivi = `${getOrigin()}/chantier/${chantier.lien_token}`;
+  const lienSuivi = `${await getOrigin()}/chantier/${chantier.lien_token}`;
 
   // Le QR code est un bonus dans l'email de bienvenue : sa génération ou
   // son upload ne doivent jamais empêcher l'envoi de l'email lui-même.

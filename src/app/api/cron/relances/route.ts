@@ -18,7 +18,7 @@ async function isAuthorized(request: NextRequest) {
     if (header === `Bearer ${cronSecret}`) return true;
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
