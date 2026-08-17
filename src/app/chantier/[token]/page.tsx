@@ -40,11 +40,12 @@ function EtapeIcon({ fait }: { fait: boolean }) {
   );
 }
 
-export default async function ChantierPubliquePage({
-  params,
-}: {
-  params: { token: string };
-}) {
+export default async function ChantierPubliquePage(
+  props: {
+    params: Promise<{ token: string }>;
+  }
+) {
+  const params = await props.params;
   const admin = createAdminClient();
 
   const { data: chantier } = await admin

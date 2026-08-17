@@ -12,11 +12,12 @@ export const viewport: Viewport = {
   themeColor: "#d4a94a",
 };
 
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams: { redirectTo?: string };
-}) {
+export default async function LoginPage(
+  props: {
+    searchParams: Promise<{ redirectTo?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   return (
     <main
       data-gold-bg

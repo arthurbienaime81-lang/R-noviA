@@ -17,7 +17,7 @@ export type ClientAgregat = {
 };
 
 export default async function ClientsPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

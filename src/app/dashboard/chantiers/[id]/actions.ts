@@ -54,7 +54,7 @@ export async function updateChantier(
     return { error: "Le montant doit être un nombre valide.", success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase
     .from("chantiers")
     .update({
@@ -128,7 +128,7 @@ export async function toggleEtape(
   etapeId: string,
   currentStatut: StatutEtape,
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const nouveauStatut: StatutEtape = currentStatut === "fait" ? "pending" : "fait";
 
   const { error } = await supabase
@@ -194,7 +194,7 @@ export async function clorChantier(
     return { error: photoError, success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: chantierActuel } = await supabase
     .from("chantiers")
@@ -290,7 +290,7 @@ export async function uploadPhoto(
   const erreurCaption = erreurLongueur(caption, 200, "La légende");
   if (erreurCaption) return { error: erreurCaption, success: false };
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const ext = extensionFromMimeType(file.type);
   const path = `${chantierId}/${crypto.randomUUID()}.${ext}`;
 
@@ -335,7 +335,7 @@ export async function sendMessageEntreprise(
   const erreurContenu = erreurLongueur(contenu, 2000, "Le message");
   if (erreurContenu) return { error: erreurContenu, success: false };
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from("messages").insert({
     chantier_id: chantierId,
     contenu,
@@ -373,7 +373,7 @@ export async function updatePrioriteReclamation(
   reclamationId: string,
   priorite: Priorite,
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase
     .from("reclamations")
     .update({ priorite, derniere_mise_a_jour: new Date().toISOString() })
@@ -391,7 +391,7 @@ export async function updateNoteInterne(
   const erreur = erreurLongueur(noteInterne, 2000, "La note interne");
   if (erreur) return { error: erreur };
 
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase
     .from("reclamations")
     .update({
@@ -407,7 +407,7 @@ export async function updateNoteInterne(
 // ━━━ Étape 04 — Prise en charge ━━━
 
 export async function prendreEnCharge(chantierId: string, reclamationId: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const now = new Date().toISOString();
 
   const { data: reclamation } = await supabase
@@ -486,7 +486,7 @@ export async function clorReclamation(
     return { error: photoError, success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const ext = extensionFromMimeType(photo.type);
   const path = `${reclamationId}/${crypto.randomUUID()}.${ext}`;
 

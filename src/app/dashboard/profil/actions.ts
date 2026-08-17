@@ -29,7 +29,7 @@ export async function updateProfil(
     if (erreur) return { error: erreur, success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -66,7 +66,7 @@ export async function uploadLogo(
     return { error: fileError, success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -136,7 +136,7 @@ export async function changePassword(
     return { error: "Les mots de passe ne correspondent pas.", success: false };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

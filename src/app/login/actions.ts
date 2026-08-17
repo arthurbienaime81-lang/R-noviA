@@ -42,7 +42,7 @@ export async function login(
     .lt("created_at", new Date(Date.now() - 24 * 3600 * 1000).toISOString());
   await admin.from("login_attempts").insert({ email });
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,

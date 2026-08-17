@@ -8,11 +8,12 @@ export const metadata: Metadata = {
   description: "Donnez votre avis sur votre chantier.",
 };
 
-export default async function AvisPage({
-  params,
-}: {
-  params: { token: string };
-}) {
+export default async function AvisPage(
+  props: {
+    params: Promise<{ token: string }>;
+  }
+) {
+  const params = await props.params;
   const admin = createAdminClient();
 
   const { data: avis } = await admin

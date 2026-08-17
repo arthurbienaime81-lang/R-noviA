@@ -26,12 +26,13 @@ export const metadata: Metadata = {
   title: "Détail du chantier | Chantivia",
 };
 
-export default async function ChantierDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const supabase = createClient();
+export default async function ChantierDetailPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
+  const supabase = await createClient();
 
   const { data: chantier } = await supabase
     .from("chantiers")
@@ -101,7 +102,7 @@ export default async function ChantierDetailPage({
     }),
   );
 
-  const lienClient = `${getOrigin()}/chantier/${chantier.lien_token}`;
+  const lienClient = `${await getOrigin()}/chantier/${chantier.lien_token}`;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">

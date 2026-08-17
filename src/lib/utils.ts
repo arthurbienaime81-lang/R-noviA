@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
-export function getOrigin() {
-  const h = headers();
+export async function getOrigin() {
+  const h = await headers();
   const origin = h.get("origin");
   if (origin) return origin;
 
