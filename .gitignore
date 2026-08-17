@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# générés automatiquement par `next dev` (Next.js 16+) — doc d'agent IA
+# versionnée avec le framework, régénérés à chaque lancement si absents
+AGENTS.md
+CLAUDE.md
